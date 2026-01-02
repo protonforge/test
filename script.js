@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const centerAngle = baseAngle + idx * clusterSeparation;
 
     // Calculate radius dynamically
-    const baseRadius = 170;
+    const baseRadius = 120;
     const slotSize = 36;
     const minGap = 2;
     let radius = baseRadius;
