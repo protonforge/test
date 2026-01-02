@@ -14,10 +14,59 @@
   </div>
 
   <div class="tab-content">
-    <div id="fittings" class="content active">
-      <h1>Fittings</h1>
-      <p>Fitting UI goes here.</p>
-    </div>
+<div id="fittings" class="content active">
+  <div class="fitting-container">
+    <svg
+      id="fitting-svg"
+      viewBox="0 0 400 400"
+      width="400"
+      height="400"
+    >
+
+      <!-- Outer circle -->
+      <circle cx="200" cy="200" r="180" class="outer-ring" />
+
+      <!-- Ship placeholder -->
+      <circle cx="200" cy="200" r="60" class="ship-core" />
+      <text x="200" y="205" text-anchor="middle" class="ship-text">
+        SHIP
+      </text>
+
+      <!-- HIGH SLOTS -->
+      <g class="slot high" data-slot="high-1" transform="translate(200 20)">
+        <circle r="18" />
+      </g>
+
+      <g class="slot high" data-slot="high-2" transform="translate(320 120)">
+        <circle r="18" />
+      </g>
+
+      <g class="slot high" data-slot="high-3" transform="translate(80 120)">
+        <circle r="18" />
+      </g>
+
+      <!-- MID SLOTS -->
+      <g class="slot mid" data-slot="mid-1" transform="translate(340 200)">
+        <circle r="18" />
+      </g>
+
+      <g class="slot mid" data-slot="mid-2" transform="translate(60 200)">
+        <circle r="18" />
+      </g>
+
+      <!-- LOW SLOTS -->
+      <g class="slot low" data-slot="low-1" transform="translate(120 320)">
+        <circle r="18" />
+      </g>
+
+      <g class="slot low" data-slot="low-2" transform="translate(280 320)">
+        <circle r="18" />
+      </g>
+
+    </svg>
+  </div>
+</div>
+
 
     <div id="skills" class="content">
       <h1>Skills</h1>
