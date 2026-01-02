@@ -33,16 +33,23 @@ const MODULE_DATA = {
 
 
 let selectedSlot = null;
+let activeSlot = null;
 
 // Slot selection
 document.querySelectorAll(".slot").forEach(slot => {
   slot.addEventListener("click", () => {
+
     document.querySelectorAll(".slot").forEach(s =>
       s.classList.remove("selected")
     );
 
     selectedSlot = slot;
     slot.classList.add("selected");
+
+    // If slot has a module, show info panel
+    if (slot.dataset.module) {
+      showModuleInfo(slot);
+    }
   });
 });
 
@@ -70,3 +77,17 @@ document.querySelectorAll(".module").forEach(module => {
     selectedSlot.dataset.module = module.textContent;
   });
 });
+
+function showModuleInfo(slot) {
+  activeSlot = slot;
+
+  const name = slot.dataset.module;
+  const data = MODULE_DATA[name];
+
+  document.getElementById("module-name").textContent = name;
+  document.getElementById("stat-pg").textContent = data.pg;
+  document.getElementById("stat-cap").textContent = data.cap;
+  document.getElementById("stat-bonus").textContent = data.bonus;
+
+  document.getElementById("module-info").classList.remove("hidden");
+}
