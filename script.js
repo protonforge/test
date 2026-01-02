@@ -1,3 +1,37 @@
+const MODULE_DATA = {
+  "Laser Cannon": {
+    pg: 12,
+    cap: 8,
+    bonus: "High EM Damage"
+  },
+  "Pulse Laser": {
+    pg: 10,
+    cap: 6,
+    bonus: "Faster Rate of Fire"
+  },
+  "Warp Scrambler": {
+    pg: 15,
+    cap: 12,
+    bonus: "-2 Warp Strength"
+  },
+  "Webifier": {
+    pg: 8,
+    cap: 5,
+    bonus: "-60% Velocity"
+  },
+  "Heat Sink": {
+    pg: 5,
+    cap: 0,
+    bonus: "+15% Laser DPS"
+  },
+  "Armor Repairer": {
+    pg: 18,
+    cap: 20,
+    bonus: "Repairs Armor Over Time"
+  }
+};
+
+
 let selectedSlot = null;
 
 // Slot selection
