@@ -26,7 +26,7 @@ const shipList = document.getElementById("ship-list");
 // =====================
 const CENTER_X = 200;
 const CENTER_Y = 200;
-const SLOT_RADIUS = 155; // PUSHED OUTWARD (single shared circle) ffs this change screwed a bunch of stuff, Alex do not touch anymore
+const SLOT_RADIUS = 165; // PUSHED OUTWARD (single shared circle) ffs this change screwed a bunch of stuff, Alex do not touch anymore
 const SLOT_SIZE = 18;
 const SLOT_SPREAD = 22; // degrees between slots inside a cluster
 
