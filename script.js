@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const CENTER_Y = 200;
   const SLOT_RADIUS = 150;
   const SLOT_SIZE = 18;
-  const SLOT_SPACING = 12;
+  const SLOT_SPACING = 14;
   const BUFFER = 5;
 
   let selectedSlot = null;
