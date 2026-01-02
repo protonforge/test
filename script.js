@@ -5,6 +5,15 @@ const SHIPS = {
   // Add more ships here
 };
 
+const shipMenu = document.getElementById("ship-menu");
+const shipCore = document.querySelector(".ship-core");
+
+// Open ship menu when clicking ship core
+shipCore.addEventListener("click", () => {
+  shipMenu.classList.toggle("hidden");
+});
+
+
 function createSlots(shipName) {
   const svg = document.getElementById("fitting-svg");
 
