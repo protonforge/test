@@ -46,9 +46,10 @@ function createSlots(shipName) {
   }
   if (!ship) return;
 
-  placeCluster("high", ship.high, 0);
-  placeCluster("mid", ship.mid, 120);
-  placeCluster("low", ship.low, 240);
+  placeCluster("high", ship.high, -60); // top arc
+  placeCluster("mid",  ship.mid,  90);  // right arc
+  placeCluster("low",  ship.low,  210); // bottom-left arc
+
 
   attachSlotListeners();
 }
@@ -56,39 +57,33 @@ function createSlots(shipName) {
 // =====================
 // PLACE SLOT CLUSTER
 // =====================
-function placeCluster(type, count, centerAngle) {
+function placeCluster(type, count, startAngle) {
   if (count === 0) return;
 
-  const startAngle = centerAngle - (SLOT_SPREAD * (count - 1)) / 2;
+  const SPACING = 16; // degrees between slots
+  const RADIUS = 140;
 
   for (let i = 0; i < count; i++) {
-    const angle = startAngle + i * SLOT_SPREAD;
+    const angle = startAngle + i * SPACING;
 
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", `slot ${type}`);
     g.setAttribute("data-slot", `${type}-${i + 1}`);
     g.setAttribute(
       "transform",
-      `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`
+      `translate(200 200) rotate(${angle})`
     );
 
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", 0);
-    circle.setAttribute("cy", -SLOT_RADIUS);
-    circle.setAttribute("r", SLOT_SIZE);
+    circle.setAttribute("cy", -RADIUS);
+    circle.setAttribute("r", 18);
     g.appendChild(circle);
-
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", 0);
-    text.setAttribute("y", -SLOT_RADIUS + 35);
-    text.setAttribute("text-anchor", "middle");
-    text.textContent = type[0].toUpperCase();
-    g.appendChild(text);
 
     const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
     image.setAttribute("class", "slot-icon");
     image.setAttribute("x", -14);
-    image.setAttribute("y", -SLOT_RADIUS - 14);
+    image.setAttribute("y", -RADIUS - 14);
     image.setAttribute("width", 28);
     image.setAttribute("height", 28);
     image.setAttribute("visibility", "hidden");
@@ -97,6 +92,7 @@ function placeCluster(type, count, centerAngle) {
     svg.appendChild(g);
   }
 }
+
 
 // =====================
 // SHIP MENU LOGIC
