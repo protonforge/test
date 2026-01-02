@@ -30,6 +30,7 @@ let activeSlot = null;
 
 // Ship menu logic
 document.addEventListener("DOMContentLoaded", () => {
+
   const shipMenu = document.getElementById("ship-menu");
   const shipCore = document.querySelector(".ship-core");
 
@@ -38,19 +39,22 @@ document.addEventListener("DOMContentLoaded", () => {
     shipMenu.classList.toggle("hidden");
   });
 
-  // Click a ship in the menu to generate slots and close the menu
-  document.querySelectorAll(".ship-option").forEach(option => {
-    option.addEventListener("click", () => {
-      const selectedShip = option.dataset.ship;
+  // Use event delegation to ensure clicks on ship options always work
+  shipMenu.addEventListener("click", (e) => {
+    const option = e.target.closest(".ship-option");
+    if (!option) return;
 
-      // Generate slots dynamically
-      createSlots(selectedShip);
+    const selectedShip = option.dataset.ship;
 
-      // Close ship menu after selection
-      shipMenu.classList.add("hidden");
-    });
+    // Generate slots dynamically
+    createSlots(selectedShip);
+
+    // Automatically close the ship menu
+    shipMenu.classList.add("hidden");
   });
+
 });
+
 
 // =====================
 // CREATE SLOTS FUNCTION
