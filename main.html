@@ -1,608 +1,519 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>W3.CSS Template</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-</head>
-<body>
+<style>
+/* default transition for smooth toggle */
+g[role="img"] {
+  cursor: pointer;
+}
 
-<!-- Side Navigation -->
-<nav class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-center" style="display:none" id="mySidebar">
-  <h1 class="w3-xxxlarge w3-text-theme">Side Navigation</h1>
-  <button class="w3-bar-item w3-button" onclick="w3_close()">Close <i class="fa fa-remove"></i></button>
-  <a href="#" class="w3-bar-item w3-button">Link 1</a>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-  <a href="#" class="w3-bar-item w3-button">Link 4</a>
-</nav>
+/* ACTIVE (ON) */
+g[role="img"].active use,
+g[role="img"].active path {
+  fill: #3ab95f !important;
+  stroke: #0b6b2e !important;
+}
 
-<!-- Header -->
-<header class="w3-container w3-theme w3-padding" id="myHeader">
-  <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
-  <div class="w3-center">
-  <h4>BEAUTIFUL RESPONSIVE WEB SITES</h4>
-  <h1 class="w3-xxxlarge w3-animate-bottom">BUILT WITH W3.CSS</h1>
-    <div class="w3-padding-32">
-      <button class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">LEARN W3.CSS</button>
-    </div>
-  </div>
-</header>
+/* optional glow */
+g[role="img"].active {
+  filter: url(#glow);
+}
 
-<!-- Modal -->
-<div id="id01" class="w3-modal">
-    <div class="w3-modal-content w3-card-4 w3-animate-top">
-      <header class="w3-container w3-theme-l1"> 
-        <span onclick="document.getElementById('id01').style.display='none'"
-        class="w3-button w3-display-topright">×</span>
-        <h4>Oh snap! We just showed you a modal..</h4>
-        <h5>Because we can <i class="fa fa-smile-o"></i></h5>
-      </header>
-      <div class="w3-padding">
-        <p>Cool huh? Ok, enough teasing around..</p>
-        <p>Go to our <a class="w3-btn" href="/w3css/default.asp">W3.CSS Tutorial</a> to learn more!</p>
-      </div>
-      <footer class="w3-container w3-theme-l1">
-        <p>Modal footer</p>
-      </footer>
-    </div>
+</style>
+<div class="text-column">
+<div>
+<!---->
+<!---->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" style="">
+<defs>
+<!---->
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-130500001" href="/assets/item_icons/130500001.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-130140301" href="/assets/item_icons/130140301.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-11300100000" href="/assets/item_icons/11300100000.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-11038000000" href="/assets/item_icons/11038000000.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-120340001" href="/assets/item_icons/120340001.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-11347000000" href="/assets/item_icons/11347000000.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-120040003" href="/assets/item_icons/120040003.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-11702000002" href="/assets/item_icons/11702000002.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-11710000002" href="/assets/item_icons/11710000002.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-210000011" href="/assets/item_icons/210000011.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-81000000003" href="/assets/item_icons/81000000003.png">
+</image>
+<image preserveAspectRatio="xMidYMin" width="34" height="34" id="item-icon-10500000206" href="/assets/item_icons/10500000206.png">
+</image>
+<!---->
+<filter id="glow">
+<feGaussianBlur stdDeviation="2.5" result="coloredBlur">
+</feGaussianBlur>
+<feMerge>
+<feMergeNode in="coloredBlur">
+</feMergeNode>
+<feMergeNode in="SourceGraphic">
+</feMergeNode>
+</feMerge>
+</filter>
+<g id="outer-slot-frame">
+<path d="M35.36,32.06c.49-5.19.75-10.44.75-15.75s-.26-10.57-.75-15.75L.54,4.21c.37,3.98.57,8.02.57,12.1s-.2,8.11-.57,12.1l34.81,3.66Z" stroke-width="0.5">
+</path>
+</g>
+<g id="outer-dropped-slot" transform=" translate(333 188.7)">
+<use href="#outer-slot-frame" fill="[object Object]">
+</use>
+</g>
+<g id="high-dropped-slot" transform=" translate(333 188.7)">
+<image transform="translate(9 8) rotate(-30 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv02.png">
+</image>
+<use href="#outer-slot-frame" fill="#3ab95f36" stroke="#065511">
+</use>
+</g>
+<g id="low-dropped-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 8) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv01.png">
+</image>
+<use href="#outer-slot-frame" fill="#3ab95f36" stroke="#065511">
+</use>
+</g>
+<g id="mid-dropped-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 8) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv05.png">
+</image>
+<use href="#outer-slot-frame" fill="#3ab95f36" stroke="#065511">
+</use>
+</g>
+<g id="drone-dropped-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 6.5) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv06.png">
+</image>
+<use href="#outer-slot-frame" fill="#3ab95f36" stroke="#065511">
+</use>
+</g>
+<g id="outer-slot" transform=" translate(333 188.7)">
+<use href="#outer-slot-frame" fill="[object Object]">
+</use>
+</g>
+<g id="high-slot" transform=" translate(333 188.7)">
+<image transform="translate(9 8) rotate(-30 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv02.png">
+</image>
+<use href="#outer-slot-frame" fill="#6c717636" stroke="#8a8a8a4f">
+</use>
+</g>
+<g id="low-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 8) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv01.png">
+</image>
+<use href="#outer-slot-frame" fill="#6c717636" stroke="#8a8a8a4f">
+</use>
+</g>
+<g id="mid-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 8) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv05.png">
+</image>
+<use href="#outer-slot-frame" fill="#6c717636" stroke="#8a8a8a4f">
+</use>
+</g>
+<g id="drone-slot" transform=" translate(333 188.7)">
+<image transform="translate(10 6.5) rotate(-90 8 8) " preserveAspectRatio="xMidYMin" width="16" height="16" opacity="0.2" href="/elements/assembly/assenbly_item_lv06.png">
+</image>
+<use href="#outer-slot-frame" fill="#6c717636" stroke="#8a8a8a4f">
+</use>
+</g>
+<!---->
+<g id="outer-slot-r" transform=" translate(333 188.7)">
+<path d="M35.36,32.06c.49-5.19.75-10.44.75-15.75s-.26-10.57-.75-15.75L.54,4.21c.37,3.98.57,8.02.57,12.1s-.2,8.11-.57,12.1l34.81,3.66Z" fill="red" stroke="#8a8a8a4f" stroke-width="0.5">
+</path>
+</g>
+<g id="inner-slot" transform=" translate(298 194)">
+<image transform="translate(7 5) " preserveAspectRatio="xMidYMin" width="12" height="12" opacity="0.2" href="/elements/assembly/assenbly_item_lv03.png">
+</image>
+<path d="M25.86,22.65c.33-3.64.51-7.32.51-11.05s-.18-7.41-.51-11.05L.54,3.21c.24,2.76.37,5.56.37,8.39s-.13,5.62-.37,8.39l25.32,2.66Z" fill="#6c717636" stroke="#8a8a8a4f" stroke-width="0.5" width="150">
+</path>
+</g>
+<!---->
+<filter id="isk-text-glow" x="-50%" y="-50%" width="200%" height="200%">
+<feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur">
+</feGaussianBlur>
+<feFlood flood-color="red" flood-opacity="0.90">
+</feFlood>
+<feComposite in2="blur" operator="in" result="glow">
+</feComposite>
+<feMerge>
+<feMergeNode in="glow">
+</feMergeNode>
+<feMergeNode in="SourceGraphic">
+</feMergeNode>
+</feMerge>
+</filter>
+</defs>
+<!---->
+<g transform="translate(22 26) scale(1.7 1.7)" role="img" id="fit.nanocore.0">
+<use href="#item-icon-81000000003">
+</use>
+</g>
+<!---->
+<g id="assembly-frame">
+<circle r="170" stroke="white" stroke-width="1" fill="none" filter="url(#glow)" cx="205" cy="205">
+</circle>
+<g transform="translate(80, 80)">
+<clipPath id="clipCircle">
+<circle r="125" cx="125" cy="125">
+</circle>
+</clipPath>
+<image preserveAspectRatio="xMidYMin" width="250" height="250" clip-path="url(#clipCircle)" href="/elements/bg_amarr_s.png">
+</image>
+<circle r="125" stroke="white" stroke-width="1.5" fill="none" opacity="0.4" filter="url(#glow)" cx="125" cy="125">
+</circle>
+</g>
+<image x="128" y="140" preserveAspectRatio="xMidYMin" width="156" height="156" href="/assets/ship_icons/110003013.png">
+</image>
+<use href="#inner-slot" id="eng-rig-0" transform="rotate(60 205 205)">
+</use>
+<g role="img" id="fit.mech_rig_slot.0" transform="rotate(60 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-60 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11710000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#inner-slot" id="eng-rig-1" transform="rotate(48 205 205)">
+</use>
+<g role="img" id="fit.mech_rig_slot.1" transform="rotate(48 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-48 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11710000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#inner-slot" id="eng-rig-2" transform="rotate(36 205 205)">
+</use>
+<g role="img" id="fit.mech_rig_slot.2" transform="rotate(36 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-36 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11710000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<!---->
+<!---->
+<use href="#inner-slot" transform="rotate(120 205 205)">
+</use>
+<g role="img" id="fit.eng_rig_slot.0" transform="rotate(120 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-120 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11702000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#inner-slot" transform="rotate(132 205 205)">
+</use>
+<g role="img" id="fit.eng_rig_slot.1" transform="rotate(132 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-132 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11702000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#inner-slot" transform="rotate(144 205 205)">
+</use>
+<g role="img" id="fit.eng_rig_slot.2" transform="rotate(144 205 205)">
+<g transform="translate(300 195.6)">
+<g id="item-icon" transform="rotate(-144 11.899999999999999 10.149999999999999)">
+<use transform="scale(0.7 0.7)" href="#item-icon-11702000002">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<!---->
+<use href="#high-dropped-slot" transform="rotate(280 205 205)">
+</use>
+<g role="img" id="fit.hi_slot.0" transform="rotate(280 205 205)">
+<g transform="translate(332 190)">
+<g id="item-icon" transform="rotate(-280 17 14.5)">
+<use width="34" height="34" href="#item-icon-120040003">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#high-slot" transform="rotate(292 205 205)">
+</use>
+<g role="img" id="fit.hi_slot.1" transform="rotate(292 205 205)">
+<g transform="translate(332 190)">
+<g id="item-icon" transform="rotate(-292 17 14.5)">
+<use width="34" height="34" href="#item-icon-120040003">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#high-slot" transform="rotate(304 205 205)">
+</use>
+<g role="img" id="fit.hi_slot.2" transform="rotate(304 205 205)">
+<g transform="translate(332 190)">
+<g id="item-icon" transform="rotate(-304 17 14.5)">
+<use width="34" height="34" href="#item-icon-120040003">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<!---->
+<use href="#mid-dropped-slot" transform="rotate(21 205 205)">
+</use>
+<g role="img" id="fit.med_slot.0" transform="rotate(21 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-21 17 14.5)">
+<use width="34" height="34" href="#item-icon-11038000000">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#mid-slot" transform="rotate(33 205 205)">
+</use>
+<g role="img" id="fit.med_slot.1" transform="rotate(33 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-33 17 14.5)">
+<use width="34" height="34" href="#item-icon-120340001">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#mid-dropped-slot" transform="rotate(45 205 205)">
+</use>
+<g role="img" id="fit.med_slot.2" transform="rotate(45 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-45 17 14.5)">
+<use width="34" height="34" href="#item-icon-11347000000">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<use href="#low-dropped-slot" transform="rotate(100 205 205)">
+</use>
+<g role="img" id="fit.low_slot.0" transform="rotate(100 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-100 17 14.5)">
+<use width="34" height="34" href="#item-icon-130500001">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#low-slot" transform="rotate(112 205 205)">
+</use>
+<g role="img" id="fit.low_slot.1" transform="rotate(112 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-112 17 14.5)">
+<use width="34" height="34" href="#item-icon-130140301">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<use href="#low-slot" transform="rotate(124 205 205)">
+</use>
+<g role="img" id="fit.low_slot.2" transform="rotate(124 205 205)">
+<g transform="translate(334 190)">
+<g id="item-icon" transform="rotate(-124 17 14.5)">
+<use width="34" height="34" href="#item-icon-11300100000">
+</use>
+</g>
+</g>
+</g>
+<!---->
+<!---->
+</g>
+<!---->
+<!---->
+<g transform="translate(393 30)">
+<text y="27" font-size="32" fill="white">Succubus
+</text>
+<text y="60" font-size="34" fill="#ffdc00" filter="url(#isk-text-glow)">680,104,268
+</text>
+<!---->
+<g transform="translate(0 78)">
+<text font-size="12" fill="white">ID:11556715
+</text>
+<!---->
+<rect width="80" height="15" y="-12" fill="transparent" style="cursor:pointer">
+</rect>
+</g>
+<!---->
+<g transform="translate(0 90)">
+<image preserveAspectRatio="xMidYMin" width="100" height="100" href="/assets/portraits/pfg006_s.png">
+</image>
+<!---->
+<g transform="translate(104 0)">
+<text y="0" x="0" font-size="14" fill="white">Scram str: -4.4
+</text>
+<!---->
+<!---->
+<g style="cursor: pointer;">
+<text y="27" x="0" font-size="16" fill="white">[FAB] Setmuns.
+</text>
+<!---->
+</g>
+<!---->
+<!---->
+<!---->
+<image x="0" preserveAspectRatio="xMidYMin" width="30" height="30" y="36" href="/corp_logo/PCGYyQdsL.png">
+</image>
+<!---->
+<!---->
+<g style="cursor: pointer;">
+<text font-size="16" fill="white" y="56" x="38">Força Aeroespacial
+</text>
+<!---->
+</g>
+<!---->
+<!---->
+<image x="0" y="70" preserveAspectRatio="xMidYMin" width="30" height="30" href="/corp_logo/2dgdD5kp8F.png">
+</image>
+<!---->
+<g style="cursor: pointer;">
+<text y="89" font-size="16" fill="white" x="38">Yes Please Boop
+</text>
+<!---->
+</g>
+<!---->
+<!---->
+</g>
+</g>
+<g transform="translate(0, 210)">
+<text fill="white" font-size="14" y="0">2026-01-02T09:49:10
+</text>
+<text fill="white" font-size="14" y="18">AGG-NR [Deklein]
+</text>
+<text fill="white" font-size="14" y="36">Damage taken: 18,432
+</text>
+</g>
+<g transform="translate(0 270)">
+<text y="0" x="0" fill="white">Final blow:
+</text>
+<g transform="translate(0 8)">
+<image preserveAspectRatio="xMidYMin" width="100" height="100" href="/assets/portraits/pmc007_s.png">
+</image>
+<!---->
+<g transform="translate(104 0)">
+<!---->
+<g style="cursor: pointer;">
+<text y="27" x="0" font-size="16" fill="white">[SHIE] JuFox
+</text>
+<!---->
+</g>
+<!---->
+<!---->
+<image x="0" y="36" preserveAspectRatio="xMidYMin" width="30" height="30" href="/corp_logo/Vhk1wcxHE.png">
+</image>
+<!---->
+<!---->
+<g style="cursor: pointer;">
+<text y="55" font-size="16" fill="white" x="38">SHIELD
+</text>
+<!---->
+</g>
+<!---->
+<image x="0" y="70" preserveAspectRatio="xMidYMin" width="30" height="30" href="/corp_logo/GXrgpkrA3.png">
+</image>
+<!---->
+<g style="cursor: pointer;">
+<text y="89" font-size="16" fill="white" x="38">The Silent Alliance
+</text>
+<!---->
+</g>
+<!---->
+<!---->
+</g>
+<g transform="translate(0 110 ) scale(1.5 1.5)">
+<image preserveAspectRatio="xMidYMin" width="35" height="28" href="/assets/ship_icons/10500000206.png">
+</image>
+<text y="10" font-size="12" fill="white" x="40">Typhoon II
+</text>
+<!---->
+<text y="27" font-size="12" fill="#ffffffa8" x="40">Damage
+</text>
+<text y="10" text-anchor="end" font-size="12" fill="white" x="220">100%
+</text>
+<text y="27" text-anchor="end" font-size="12" fill="white" x="220">18,432
+</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 439)">
+<rect width="334" height="25" fill="#646464" opacity="0.2" rx="2">
+</rect>
+<text y="18.5" text-anchor="middle" fill="white" font-size="14" x="167">SOLO 
+</text>
+</g>
+<!---->
+</g>
+<g transform="translate (30 410)">
+<rect width="345" fill="#646464" opacity="0.2" rx="5" height="84">
+</rect>
+<!---->
+<g transform="translate(0 0)">
+<clipPath id="thingy">
+<rect fill="none" stroke-width="0.5" rx="5" width="40.5" height="40.5">
+</rect>
+</clipPath>
+<rect fill="black" stroke="#646464" stroke-width="0.8" rx="5" width="40.5" height="40.5">
+</rect>
+<g role="img" id="fit.cargo.0">
+<use x="5" y="0" transform="scale(1 1)" href="#item-icon-210000011">
+</use>
+<!---->
+</g>
+<!---->
+<rect height="13" clip-path="url(#thingy)" width="40.5" fill="#009b6191" y="27.5">
+</rect>
+<text font-size="12px" fill="white" opacity="0.5" x="14" y="38">1.0
+</text>
+<!---->
+</g>
+<!---->
+</g>
+</svg>
+<!----> 
+<div class="flex w-full">
+<div class="w-1/2">
+<div style="aspect-ratio: 100/6; position: relative; ">
+<!---->
 </div>
-
-<div class="w3-row-padding w3-center w3-margin-top">
-<div class="w3-third">
-  <div class="w3-card w3-container" style="min-height:460px">
-  <h3>Responsive</h3><br>
-  <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Built-in responsiveness</p>
-  <p>Mobile first fluid grid</p>
-  <p>Fits any screen sizes</p>
-  <p>PC Tablet and Mobile</p>
-  </div>
-</div>
-
-<div class="w3-third">
-  <div class="w3-card w3-container" style="min-height:460px">
-  <h3>Standard CSS</h3><br>
-  <i class="fa fa-css3 w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Standard CSS only</p>
-  <p>Easy to learn</p>
-  <p>No need for jQuery</p>
-  <p>No JavaScript library</p>
-  </div>
-</div>
-
-<div class="w3-third">
-  <div class="w3-card w3-container" style="min-height:460px">
-  <h3>Design</h3><br>
-  <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-  <p>Paper like design</p>
-  <p>Bold colors and shadows</p>
-  <p>Equal across platforms</p>
-  <p>Equal across devices</p>
-  </div>
-</div>
-</div>
-
-<div class="w3-container">
-<hr>
-<div class="w3-center">
-  <h2>Color Classes</h2>
-</div>
-
-<div class="w3-row">
-  <div class="w3-col w3-container m2 w3-red"><p>Red</p></div>
-  <div class="w3-col w3-container m2 w3-blue"><p>Blue</p></div>
-  <div class="w3-col w3-container m2 w3-blue-grey"><p>Blue Grey</p></div>
-  <div class="w3-col w3-container m2 w3-teal"><p>Teal</p></div>
-  <div class="w3-col w3-container m2 w3-yellow"><p>Yellow</p></div>
-  <div class="w3-col w3-container m2 w3-orange"><p>Orange</p></div>
-</div>
-
-<hr>
-<div class="w3-center">
-  <h2>Built-In Responsiveness</h2>
-  <p class="w3-large">Resize the page to see the effect!</p>
-</div>
-<br>
-
-<div class="w3-row w3-border">
-  <div class="w3-half w3-container w3-blue w3-border">
-    <h5>w3-half</h5>  
-    <p>The w3-half class uses half (50%) of the screen window.</p>
-    <p>On small screens (max 600 pixels) it automatically resizes to full screen width.</p>
-  </div>
-  <div class="w3-half w3-container">
-    <h5>w3-half</h5>  
-  </div>
-</div>
-<br>
-
-<div class="w3-row w3-border">
-  <div class="w3-third w3-container w3-green">
-    <h5>w3-third</h5>  
-    <p>The w3-third class uses one third (33.33%) of the screen widow.</p>
-    <p>On small screens (max 600 pixels) it automatically resizes to full screen width.</p>
-  </div>
-  <div class="w3-third w3-container">
-    <h5>w3-third</h5>  
-  </div>
-  <div class="w3-third w3-container">
-    <h5>w3-third</h5>  
-  </div>
-</div>
-<br>
-
-<div class="w3-row w3-border">
-  <div class="w3-quarter w3-container w3-red">
-    <h5>w3-quarter</h5>  
-    <p>The w3-quarter class uses one quarter (25%) of the screen window.</p>
-    <p>On small screens (max 600 pixels) it automatically resizes to full screen width.</p>
-  </div>
-  <div class="w3-quarter w3-container">
-    <h5>w3-quarter</h5>  
-  </div>
-  <div class="w3-quarter w3-container">
-    <h5>w3-quarter</h5>  
-  </div>
-  <div class="w3-quarter w3-container">
-    <h5>w3-quarter</h5>  
-  </div>
 </div> 
-     
-<div class="w3-center">
-  <h2>Containers</h2>
-  <p>Use containers to create headers, sections and footers.</p>
-</div>   
-
-<header class="w3-container w3-blue-grey">
-  <h2>Header</h2>
-</header>
-
-<div class="w3-padding w3-white w3-display-container">
-  <span onclick="this.parentElement.style.display='none'" class="w3-button w3-display-topright"><i class="fa fa-remove"></i></span>
-  <h2>London</h2>
-  <p>London is the capital city of England. It is the most populous city in the United Kingdom,
-  with a metropolitan area of over 13 million inhabitants.</p>
-  <p>Standing on the River Thames, London has been a major settlement for two millennia,
-  its history going back to its founding by the Romans, who named it Londinium.</p>
-  <p>By the way, you can add a close icon to all containers if you want the ability to hide them. Look to your right!</p>
-</div>
-
-<footer class="w3-container w3-blue-grey">
-  <h5>Footer</h5>
-  <p class="w3-opacity">Footer information goes here</p>
-</footer>
-
-<hr>
-<div class="w3-center">
-  <h2>Color Themes</h2>
-  <p>The color themes have been designed to work harmoniously with each other.</p>
+<div class="w-1/2 ">
+<div style="margin-top: -8%; aspect-ratio: 100/6;">
+</div> 
+<!---->
 </div>
 </div>
-
-<div class="w3-row-padding">
-
-<div class="w3-half">
-<div class="w3-card white">
-  <div class="w3-container w3-indigo">
-    <h3>Theme Indigo</h3>
-  </div>
-  <div class="w3-container">
-  <h3 class="w3-text-indigo">Movies 2014</h3>
-  </div>
-  <ul class="w3-ul w3-border-top">
-    <li>
-      <h3>Frozen</h3>
-      <p>The response to the animations was ridiculous</p>
-    </li>
-    <li>
-      <h3>The Fault in Our Stars</h3>
-      <p>Touching, gripping and genuinely well made</p>
-    </li>
-    <li>
-      <h3>The Avengers</h3>
-      <p>A huge success for Marvel and Disney</p>
-    </li>
-  </ul>
-  <div class="w3-container w3-indigo w3-large"><span class="w3-right">Next</span></div>
+<!---->
 </div>
 </div>
-
-<div class="w3-half">
-<div class="w3-card white">
-  <div class="w3-container w3-theme">
-    <h3>Theme</h3>
-  </div>
-  <div class="w3-container">
-  <h3 class="w3-text-theme">Movies 2014</h3>
-  </div>
-  <ul class="w3-ul w3-border-top">
-    <li>
-      <h3>Frozen</h3>
-      <p>The response to the animations was ridiculous</p>
-    </li>
-    <li>
-      <h3>The Fault in Our Stars</h3>
-      <p>Touching, gripping and genuinely well made</p>
-    </li>
-    <li>
-      <h3>The Avengers</h3>
-      <p>A huge success for Marvel and Disney</p>
-    </li>
-  </ul>
-  <div class="w3-container w3-theme w3-large"><span class="w3-right">Next</span></div>
-</div>
-</div>
-</div>
-
-<div class="w3-container w3-center">
-  <hr>
-  <h3>Paper-like Cards with Shadows</h3>
-</div>
-
-<div class="w3-row-padding"> 
-
-<div class="w3-third">
-<div class="w3-card">
-  <img src="/w3images/car.jpg" alt="Car" style="width:100%">
-  <div class="w3-container">
-  <p>w3-card</p>
-  </div>
-</div>
-</div>
-
-<div class="w3-third">
-<div class="w3-card-4">
-  <img src="/w3images/car.jpg" alt="Car" style="width:100%">
-  <div class="w3-container">
-  <p>w3-card-4</p>
-  </div>
-</div>
-</div>
-
-<div class="w3-third">
-<div class="w3-card-4">
-  <img src="/w3images/car.jpg" alt="Car" style="width:100%">
-  <div class="w3-container">
-  <p>w3-card-4</p>
-  </div>
-</div>
-</div>
-</div>
-
-<div class="w3-container">
-  <hr>
-  <div class="w3-center">
-    <h2>Tables</h2>
-    <p w3-class="w3-large">Don't worry. W3.CSS takes care of your tables.</p>
-  </div>
-<div class="w3-responsive w3-card-4">
-<table class="w3-table w3-striped w3-bordered">
-<thead>
-<tr class="w3-theme">
-  <th>First Name</th>
-  <th>Last Name</th>
-  <th>Points</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td>Jill</td>
-  <td>Smith</td>
-  <td>50</td>
-</tr>
-<tr class="w3-white">
-  <td>Eve</td>
-  <td>Jackson</td>
-  <td>94</td>
-</tr>
-<tr>
-  <td>Adam</td>
-  <td>Johnson</td>
-  <td>67</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<hr>
-<h2 class="w3-center">Forms and Lists</h2>
-</div>
-
-<div class="w3-row-padding">
-
-<div class="w3-half">
-<form class="w3-container w3-card-4">
-  <h2>Input Form</h2>
-  <div class="w3-section">      
-    <input class="w3-input" type="text" required>
-    <label>Name</label>
-  </div>
-  <div class="w3-section">      
-    <input class="w3-input" type="text" required>
-    <label>Email</label>
-  </div>
-  <div class="w3-section">      
-    <input class="w3-input" type="text" required>
-    <label>Subject</label>
-  </div>
-
-  <div class="w3-row">
-  <div class="w3-half">
-    <input id="milk" class="w3-check" type="checkbox" checked="checked">
-    <label>Milk</label>
-    <br>
-    <input id="sugar" class="w3-check" type="checkbox">
-    <label>Sugar</label>
-    <br>
-    <input id="lemon" class="w3-check" type="checkbox" disabled>
-    <label>Lemon (Disabled)</label>
-    <br><br>
-  </div>
-
-  <div class="w3-half">
-    <input id="male" class="w3-radio" type="radio" name="gender" value="male" checked>
-    <label>Male</label>
-    <br>
-    <input id="female" class="w3-radio" type="radio" name="gender" value="female">
-    <label>Female</label>
-    <br>
-    <input id="unknown" class="w3-radio" type="radio" name="gender" value="" disabled>
-    <label> Don't know (Disabled)</label>
-  </div>
-  </div>
-</form>
-</div>
-<div class="w3-half">
-<div class="w3-card-4 w3-container">
-<h2>Lists</h2>
-<ul class="w3-ul w3-margin-bottom">
-  <li>Jill</li>
-  <li>Eve</li>
-  <li>Adam</li>
-</ul>
-<br>
-<ul class="w3-ul w3-border w3-hoverable">
-  <li class="w3-theme">Jill</li>
-  <li>Eve</li>
-  <li>Adam</li>
-  <li>Steve</li>
-</ul>
-<br>
-</div>
-</div>
-</div>
-<hr>
-
-<h2 class="w3-center">Progress Bars</h2>
-<div class="w3-container">
-
-<div class="w3-light-gray">
-  <div id="myBar" class="w3-center w3-padding w3-theme" style="width:5%">5%</div>
-</div><br>
-<button class="w3-btn w3-theme" onclick="move()">Click Me</button> 
-</div>
-<hr>
-
-<h2 class="w3-center">Slideshows</h2>
-<div class="w3-content" style="max-width:800px;position:relative">
-
-<img class="mySlides w3-animate-opacity" src="/w3images/snow.jpg" style="width:100%">
-<img class="mySlides w3-animate-opacity" src="/w3images/lights.jpg" style="width:100%">
-<img class="mySlides w3-animate-opacity" src="/w3images/mountains.jpg" style="width:100%">
-<img class="mySlides w3-animate-opacity" src="/w3images/forest.jpg" style="width:100%">
-
-<a class="w3-button w3-hover-dark-grey" style="position:absolute;top:45%;left:0;" onclick="plusDivs(-1)">❮</a>
-<a class="w3-button w3-hover-dark-grey" style="position:absolute;top:45%;right:0;" onclick="plusDivs(+1)">❯</a>
-</div>
-
-<div class="w3-container">
-<hr>
-<h2 class="w3-center">Navigation</h2>
-
-<div class="w3-bar w3-theme">
-  <a href="#" class="w3-bar-item w3-button w3-padding-16">Home</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-16">Link 1</a>
-  <div class="w3-dropdown-hover">
-    <button class="w3-button w3-padding-16">
-      Dropdown <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="w3-dropdown-content w3-card-4 w3-bar-block">
-      <a href="javascript:void(0)" class="w3-bar-item w3-button">Link 1</a>
-      <a href="javascript:void(0)" class="w3-bar-item w3-button">Link 2</a>
-      <a href="javascript:void(0)" class="w3-bar-item w3-button">Link 3</a>
-    </div>
-  </div>
-</div>
-  
-<hr>
-<h2 class="w3-center">Accordions</h2>
-<button onclick="myAccFunc('Demo1')" class="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Open Section 1</button>
-<div id="Demo1" class="w3-hide">
-  <div class="w3-container">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-  </div>
-</div>
-<button onclick="myAccFunc('Demo2')" class="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Open Section 2</button>
-<div id="Demo2" class="w3-hide">
-  <a href="#" class="w3-button w3-block w3-left-align">Link 1</a>
-  <a href="#" class="w3-button w3-block w3-left-align">Link 2</a>
-  <a href="#" class="w3-button w3-block w3-left-align">Link 3</a>
-</div>
-<button onclick="myAccFunc('Demo3')" class="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Open Section 3</button>
-<div id="Demo3" class="w3-hide w3-black">
-  <div class="w3-container">
-    <p>Accordion with Images:</p>
-    <img src="img_snowtops.jpg" style="width:30%;" class="w3-animate-zoom">
-    <p>French Alps</p>
-  </div>
-</div>
-
-<hr>
-<h2 class="w3-center">Tabs</h2>
-<div class="w3-border">
-<div class="w3-bar w3-theme">
-  <button class="w3-bar-item w3-button testbtn w3-padding-16" onclick="openCity(event,'London')">London</button>
-  <button class="w3-bar-item w3-button testbtn w3-padding-16" onclick="openCity(event,'Paris')">Paris</button>
-  <button class="w3-bar-item w3-button testbtn w3-padding-16" onclick="openCity(event,'Tokyo')">Tokyo</button>
-</div>
-
-<div id="London" class="w3-container city w3-animate-opacity">
-  <h2>London</h2>
-  <p>London is the capital city of England.</p>
-  <p>It is the most populous city in the United Kingdom, with a metropolitan area of over 13 million inhabitants.</p>
-</div>
-
-<div id="Paris" class="w3-container city w3-animate-opacity">
-  <h2>Paris</h2>
-  <p>Paris is the capital of France.</p> 
-  <p>The Paris area is one of the largest population centers in Europe, with more than 12 million inhabitants.</p>
-</div>
-
-<div id="Tokyo" class="w3-container city w3-animate-opacity">
-  <h2>Tokyo</h2>
-  <p>Tokyo is the capital of Japan.</p>
-  <p>It is the center of the Greater Tokyo Area, and the most populous metropolitan area in the world.</p>
-</div>
-</div>
-
-<hr>
-<h2 class="w3-center">Buttons</h2>
-<div class="w3-center">
-  <br>
-  <a class="w3-button w3-theme">Button</a>
-  <a class="w3-button w3-theme">Button</a>
-  <a class="w3-button w3-theme-d3 w3-disabled">Button</a>
-  <br><br>
-  <a class="w3-button w3-circle w3-large w3-black"><i class="fa fa-plus"></i></a>
-  <a class="w3-button w3-circle w3-large w3-theme"><i class="fa fa-plus"></i></a>  
-  <a class="w3-button w3-circle w3-large w3-card-4"><i class="fa fa-plus"></i></a>
-</div>
-<br>
-<div class="w3-center">
-  <div class="w3-dropdown-hover">
-    <button class="w3-button w3-theme">Dropdown <i class="fa fa-caret-down"></i></button>
-    <div class="w3-dropdown-content w3-bar-block w3-border">
-      <a href="#" class="w3-bar-item w3-button">Link 1</a>
-      <a href="#" class="w3-bar-item w3-button">Link 2</a>
-      <a href="#" class="w3-bar-item w3-button">Link 3</a>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<hr>
-<div class="w3-center">
-  <h2>Pagination</h2>
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-    <div class="w3-bar">
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">«</a>
-      <a href="#" class="w3-bar-item w3-button w3-theme w3-hover-theme">1</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">2</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">3</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">4</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">5</a>
-      <a href="#" class="w3-bar-item w3-button w3-hover-theme">»</a>
-    </div>
-  </div>
-</div>
-<br>
-
-<!-- Footer -->
-<footer class="w3-container w3-theme-dark w3-padding-16">
-  <h3>Footer</h3>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
-    <span class="w3-text w3-theme-light w3-padding">Go To Top</span>    
-    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
-    <i class="fa fa-chevron-circle-up"></i></span></a>
-  </div>
-  <p>Remember to check out our  <a href="w3css_references.asp" class="w3-btn w3-theme-light" target="_blank">W3.CSS Reference</a></p>
-</footer>
-
-<!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
 <script>
-// Side navigation
-function w3_open() {
-  var x = document.getElementById("mySidebar");
-  x.style.width = "100%";
-  x.style.fontSize = "40px";
-  x.style.paddingTop = "10%";
-  x.style.display = "block";
-}
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-}
-
-// Tabs
-function openCity(evt, cityName) {
-  var i;
-  var x = document.getElementsByClassName("city");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  var activebtn = document.getElementsByClassName("testbtn");
-  for (i = 0; i < x.length; i++) {
-    activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " w3-dark-grey";
-}
-
-var mybtn = document.getElementsByClassName("testbtn")[0];
-mybtn.click();
-
-// Accordions
-function myAccFunc(id) {
-  var x = document.getElementById(id);
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// Slideshows
-var slideIndex = 1;
-
-function plusDivs(n) {
-  slideIndex = slideIndex + n;
-  showDivs(slideIndex);
-}
-
-function showDivs(n) {
-  var x = document.getElementsByClassName("mySlides");
-  if (n > x.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = x.length} ;
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  x[slideIndex-1].style.display = "block";  
-}
-
-showDivs(1);
-
-// Progress Bars
-function move() {
-  var elem = document.getElementById("myBar");   
-  var width = 5;
-  var id = setInterval(frame, 10);
-  function frame() {
-    if (width == 100) {
-      clearInterval(id);
-    } else {
-      width++; 
-      elem.style.width = width + '%'; 
-      elem.innerHTML = width * 1  + '%';
-    }
-  }
-}
+  document.querySelectorAll('g[role="img"]').forEach(slot => {
+    slot.addEventListener('click', () => {
+      slot.classList.toggle('active');
+    });
+  });
 </script>
 
-</body>
-</html>
+
