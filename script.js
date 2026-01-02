@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   const CENTER_X = 200;
   const CENTER_Y = 200;
-  const SLOT_RADIUS = 180; // distance from center
+  const SLOT_RADIUS = 170; // distance from center
   const SLOT_SIZE = 18;
   const SLOT_SPACING = 12; // degrees between slots
   const BUFFER = 5;
