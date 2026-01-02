@@ -55,48 +55,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function placeCluster(type, count, startAngle) {
-  if (count === 0) return;
+    if (count === 0) return;
 
-  // Calculate dynamic radius offset
-  // Push clusters slightly outward based on slot count to avoid overlap
-  let radiusOffset = 0;
-  if (count > 4) radiusOffset = (count - 4) * 3; // small outward nudge per extra slot
-  const radius = SLOT_RADIUS + radiusOffset;
+    // Slightly push clusters outward for high slot counts
+    const radiusOffset = count > 4 ? (count - 4) * 3 : 0;
+    const radius = SLOT_RADIUS + radiusOffset;
 
-  for (let i = 0; i < count; i++) {
-    const angle = startAngle + i * SLOT_SPACING;
+    for (let i = 0; i < count; i++) {
+      const angle = startAngle + i * SLOT_SPACING;
 
-    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.setAttribute("class", `slot ${type}`);
-    g.setAttribute("data-slot", `${type}-${i + 1}`);
-    g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", `slot ${type}`);
+      g.setAttribute("data-slot", `${type}-${i + 1}`);
+      g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
 
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", 0);
-    circle.setAttribute("cy", -radius); // use calculated radius
-    circle.setAttribute("r", SLOT_SIZE);
-    g.appendChild(circle);
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", 0);
+      circle.setAttribute("cy", -radius);
+      circle.setAttribute("r", SLOT_SIZE);
+      g.appendChild(circle);
 
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", 0);
-    text.setAttribute("y", -radius + 35);
-    text.setAttribute("text-anchor", "middle");
-    text.textContent = `${type[0].toUpperCase()}${i + 1}`;
-    g.appendChild(text);
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", 0);
+      text.setAttribute("y", -radius + 35);
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = `${type[0].toUpperCase()}${i + 1}`;
+      g.appendChild(text);
 
-    const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    image.setAttribute("class", "slot-icon");
-    image.setAttribute("x", -14);
-    image.setAttribute("y", -radius - 14);
-    image.setAttribute("width", 28);
-    image.setAttribute("height", 28);
-    image.setAttribute("visibility", "hidden");
-    g.appendChild(image);
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      image.setAttribute("class", "slot-icon");
+      image.setAttribute("x", -14);
+      image.setAttribute("y", -radius - 14);
+      image.setAttribute("width", 28);
+      image.setAttribute("height", 28);
+      image.setAttribute("visibility", "hidden");
+      g.appendChild(image);
 
-    svg.appendChild(g);
+      svg.appendChild(g);
+    }
   }
-}
-
 
   function attachSlotListeners() {
     document.querySelectorAll(".slot").forEach(slot => {
@@ -122,12 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!ship) return;
 
-    // Cluster half-widths for overlap check
+    // Cluster half-widths for overlap adjustment
     const highHalf = clusterHalfWidth(ship.high);
     const midHalf  = clusterHalfWidth(ship.mid);
     const lowHalf  = clusterHalfWidth(ship.low);
 
-    // Base anchor angles
     const HIGH_BASE = -60;
     const MID_BASE  = 90;
     const LOW_BASE  = 210;
@@ -136,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
     if (overlap) lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
 
-    Place clusters
+    // Place clusters
     placeCluster("high", ship.high, HIGH_BASE);
     placeCluster("mid", ship.mid, MID_BASE);
     placeCluster("low", ship.low, lowAngle);
@@ -251,4 +247,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("module-info").classList.add("hidden");
     activeSlot = null;
   });
+
 });
