@@ -1,10 +1,32 @@
-
+// =====================
+// SHIP DATA
+// =====================
 const SHIPS = {
   "Succubus": { high: 2, mid: 2, low: 2 },
   "Typhoon 2": { high: 8, mid: 4, low: 7 },
-  // Add more ships here
 };
 
+// =====================
+// MODULE DATA
+// =====================
+const MODULE_DATA = {
+  "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
+  "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster Rate of Fire" },
+  "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
+  "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
+  "Heat Sink": { pg: 5, cap: 0, bonus: "+15% Laser DPS" },
+  "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
+};
+
+// =====================
+// GLOBAL VARIABLES
+// =====================
+let selectedSlot = null;
+let activeSlot = null;
+
+// =====================
+// SHIP MENU LOGIC
+// =====================
 const shipMenu = document.getElementById("ship-menu");
 const shipCore = document.querySelector(".ship-core");
 
@@ -13,20 +35,35 @@ shipCore.addEventListener("click", () => {
   shipMenu.classList.toggle("hidden");
 });
 
+// Click ship in menu to generate slots
+document.querySelectorAll(".ship-option").forEach(option => {
+  option.addEventListener("click", () => {
+    const selectedShip = option.dataset.ship;
+    createSlots(selectedShip);
+    shipMenu.classList.add("hidden"); // close menu after selection
+  });
+});
 
+// =====================
+// CREATE SLOTS FUNCTION
+// =====================
 function createSlots(shipName) {
   const svg = document.getElementById("fitting-svg");
 
   // Clear old slots
   svg.querySelectorAll(".slot").forEach(s => s.remove());
+  selectedSlot = null;
+  activeSlot = null;
+  document.getElementById("module-info").classList.add("hidden");
 
   const ship = SHIPS[shipName];
   if (!ship) return;
 
-  // Helper: place slots in an arc
+  // Helper to place slots in a circular arc
   function placeSlots(type, count, startAngle, endAngle, radius = 140) {
     for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? (startAngle + endAngle) / 2 : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+      const angle = count === 1 ? (startAngle + endAngle) / 2
+                                : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
 
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("class", `slot ${type}`);
@@ -55,6 +92,17 @@ function createSlots(shipName) {
       image.setAttribute("visibility", "hidden");
       g.appendChild(image);
 
+      // =====================
+      // SLOT CLICK LISTENER
+      // =====================
+      g.addEventListener("click", () => {
+        document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+        selectedSlot = g;
+        g.classList.add("selected");
+
+        if (g.dataset.module) showModuleInfo(g);
+      });
+
       svg.appendChild(g);
     }
   }
@@ -65,44 +113,32 @@ function createSlots(shipName) {
   placeSlots("low", ship.low, 210, 270);
 }
 
+// =====================
 // TAB NAVIGATION
+// =====================
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     const target = tab.dataset.tab;
 
-    // Deactivate all tabs
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
 
-    // Activate clicked tab and corresponding content
     tab.classList.add('active');
     document.getElementById(target).classList.add('active');
 
-    // OPTIONAL: hide module info when leaving Fittings tab
     if (target !== 'fittings') {
       document.getElementById('module-info').classList.add('hidden');
     }
   });
 });
 
+// =====================
 // MODULE LOGIC
-const MODULE_DATA = { /* your module data */ };
-let selectedSlot = null;
-let activeSlot = null;
-
-document.querySelectorAll(".slot").forEach(slot => {
-  slot.addEventListener("click", () => {
-    document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-    selectedSlot = slot;
-    slot.classList.add("selected");
-
-    if (slot.dataset.module) showModuleInfo(slot);
-  });
-});
-
+// =====================
 document.querySelectorAll(".module").forEach(module => {
   module.addEventListener("click", () => {
     if (!selectedSlot) return;
+
     const moduleType = module.dataset.type;
     const iconPath = module.dataset.icon;
 
