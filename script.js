@@ -129,20 +129,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const ship = SHIPS[shipName];
   if (!ship) return;
 
-  function placeSlots(type, count, centerAngle, radius = 140, slotSize = 36, minGap = 2) {
+  function placeSlots(type, count, centerAngle, baseRadius = 140, slotSize = 36, minGap = 2) {
     if (count === 0) return;
 
-    // Calculate the total angle each slot occupies
-    // arcLength = radius * angle → angle = arcLength / radius
-    const slotArc = slotSize / radius * (180 / Math.PI); // degrees
-    const gap = minGap; // minimal angle gap between slots
-    let totalArc = count * slotArc + (count - 1) * gap;
+    // Calculate radius adjustment for large slot counts
+    let radius = baseRadius;
+    const maxArc = 60; // maximum cluster arc in degrees
+    let slotArc = slotSize / radius * (180 / Math.PI); // degrees per slot
+    let gap = minGap;
 
-    // Start angle so cluster is centered
+    if (count * slotArc + (count - 1) * gap > maxArc) {
+      // increase radius to fit all slots within maxArc
+      radius = radius * (count * slotArc + (count - 1) * gap) / maxArc;
+      slotArc = slotSize / radius * (180 / Math.PI);
+    }
+
+    const totalArc = count * slotArc + (count - 1) * gap;
     const startAngle = centerAngle - totalArc / 2;
 
     for (let i = 0; i < count; i++) {
-      const angle = startAngle + i * (slotArc + gap);
+      const angle = count === 1 ? centerAngle : startAngle + i * (slotArc + gap);
 
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("class", `slot ${type}`);
@@ -187,13 +193,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Place clusters with tight spacing
+  // =====================
+  // Place clusters with automatic spacing
+  // =====================
   placeSlots("high", ship.high, -30);  // top-left cluster
   placeSlots("mid", ship.mid, 120);    // right cluster
   placeSlots("low", ship.low, 240);    // bottom-left cluster
 }
-
-
 
   // =====================
   // MODULE LOGIC
