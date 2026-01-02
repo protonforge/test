@@ -54,3 +54,56 @@ body {
 .content.active {
   display: block;
 }
+
+/* Fitting UI */
+.fitting-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* SVG elements */
+.outer-ring {
+  fill: none;
+  stroke: #3b82f6;
+  stroke-width: 2;
+  opacity: 0.4;
+}
+
+.ship-core {
+  fill: #111827;
+  stroke: #9ca3af;
+  stroke-width: 2;
+}
+
+.ship-text {
+  fill: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Slots */
+.slot circle {
+  fill: #1f2937;
+  stroke: #6b7280;
+  stroke-width: 2;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* Slot types */
+.slot.high circle { stroke: #ef4444; }
+.slot.mid  circle { stroke: #3b82f6; }
+.slot.low  circle { stroke: #f59e0b; }
+
+/* Active (fitted) */
+.slot.active circle {
+  fill: #16a34a;
+  stroke: #22c55e;
+}
+
+/* Hover */
+.slot:hover circle {
+  fill: #374151;
+}
+
