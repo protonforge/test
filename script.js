@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
       image.setAttribute("width", 28);
       image.setAttribute("height", 28);
       image.setAttribute("visibility", "hidden");
-      image.setAttribute("transform", `rotate(${-angle} ${0} ${radius})`);
+      image.setAttribute("transform", `rotate(${-angle}0 ${-radius})`);
       g.appendChild(image);
 
       svg.appendChild(g);
