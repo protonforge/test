@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     text.setAttribute("y", -radius + 35);
      text.setAttribute("text-anchor", "middle");
     text.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
-    text.textContent = `${type[0].toUpperCase()}${i + 1}`;
      g.appendChild(text);
 
      svg.appendChild(g);
