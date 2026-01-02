@@ -42,7 +42,6 @@ let activeSlot = null;
 // SHIP MENU LOGIC
 // =====================
 
-// Ship menu logic
 document.addEventListener("DOMContentLoaded", () => {
   const shipCore = document.querySelector(".ship-core");
   const classMenu = document.getElementById("class-menu");
@@ -50,7 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const classList = document.getElementById("class-list");
   const shipList = document.getElementById("ship-list");
 
-  // 1️⃣ Generate class buttons
+  // =====================
+  // Generate class buttons dynamically
+  // =====================
   for (const shipClass in SHIP_CLASSES) {
     const div = document.createElement("div");
     div.className = "ship-option";
@@ -59,12 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
     classList.appendChild(div);
   }
 
-  // 2️⃣ Click ship core → open class menu
+  // =====================
+  // Click ship core → open class menu
+  // =====================
   shipCore.addEventListener("click", () => {
     classMenu.classList.toggle("hidden");
   });
 
-  // 3️⃣ Click class → show ships for that class
+  // =====================
+  // Click class → show ships for that class
+  // =====================
   classList.addEventListener("click", (e) => {
     const option = e.target.closest(".ship-option");
     if (!option) return;
@@ -89,153 +94,85 @@ document.addEventListener("DOMContentLoaded", () => {
     shipMenu.classList.remove("hidden");
   });
 
+  // =====================
   // Click ship → generate slots and close ship menu
+  // =====================
   shipList.addEventListener("click", (e) => {
     const option = e.target.closest(".ship-option");
     if (!option) return;
 
     const selectedShip = option.dataset.ship;
-
-    createSlots(selectedShip); // dynamic slot generation
-        shipMenu.classList.add("hidden"); // auto-close
+    createSlots(selectedShip); // your dynamic slot function
+    shipMenu.classList.add("hidden"); // auto-close
   });
-});
 
+  // =====================
+  // TAB NAVIGATION
+  // =====================
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
 
-// =====================
-// CREATE SLOTS FUNCTION
-// =====================
-function createSlots(shipName) {
-  const svg = document.getElementById("fitting-svg");
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
 
-  // Clear old slots
-  svg.querySelectorAll(".slot").forEach(s => s.remove());
-  selectedSlot = null;
-  activeSlot = null;
-  document.getElementById("module-info").classList.add("hidden");
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
 
-  const ship = SHIPS[shipName];
-  if (!ship) return;
+      if (target !== 'fittings') {
+        document.getElementById('module-info').classList.add('hidden');
+      }
+    });
+  });
 
-  // Helper to place slots in a circular arc
-  function placeSlots(type, count, startAngle, endAngle, radius = 140) {
-    for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? (startAngle + endAngle) / 2
-                                : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+  // =====================
+  // MODULE LOGIC
+  // =====================
+  document.querySelectorAll(".module").forEach(module => {
+    module.addEventListener("click", () => {
+      if (!selectedSlot) return;
 
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", `slot ${type}`);
-      g.setAttribute("data-slot", `${type}-${i+1}`);
-      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+      const moduleType = module.dataset.type;
+      const iconPath = module.dataset.icon;
 
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", 0);
-      circle.setAttribute("cy", -radius);
-      circle.setAttribute("r", 18);
-      g.appendChild(circle);
+      if (!selectedSlot.classList.contains(moduleType)) {
+        alert("Wrong slot type!");
+        return;
+      }
 
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", 0);
-      text.setAttribute("y", -radius + 35);
-      text.setAttribute("text-anchor", "middle");
-      text.textContent = `${type[0].toUpperCase()}${i+1}`;
-      g.appendChild(text);
+      const icon = selectedSlot.querySelector(".slot-icon");
+      icon.setAttribute("href", iconPath);
+      icon.setAttribute("visibility", "visible");
 
-      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-      image.setAttribute("class", "slot-icon");
-      image.setAttribute("x", -14);
-      image.setAttribute("y", -radius - 14);
-      image.setAttribute("width", 28);
-      image.setAttribute("height", 28);
-      image.setAttribute("visibility", "hidden");
-      g.appendChild(image);
+      selectedSlot.classList.add("active");
+      selectedSlot.dataset.module = module.textContent;
+    });
+  });
 
-      // =====================
-      // SLOT CLICK LISTENER
-      // =====================
-      g.addEventListener("click", () => {
-        document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-        selectedSlot = g;
-        g.classList.add("selected");
+  function showModuleInfo(slot) {
+    activeSlot = slot;
+    const name = slot.dataset.module;
+    const data = MODULE_DATA[name];
 
-        if (g.dataset.module) showModuleInfo(g);
-      });
+    document.getElementById("module-name").textContent = name;
+    document.getElementById("stat-pg").textContent = data.pg;
+    document.getElementById("stat-cap").textContent = data.cap;
+    document.getElementById("stat-bonus").textContent = data.bonus;
 
-      svg.appendChild(g);
-    }
+    document.getElementById("module-info").classList.remove("hidden");
   }
 
-  // Create arcs for each slot type
-  placeSlots("high", ship.high, -60, 60);
-  placeSlots("mid", ship.mid, 90, 150);
-  placeSlots("low", ship.low, 210, 270);
-}
+  document.getElementById("remove-module").addEventListener("click", () => {
+    if (!activeSlot) return;
+    const icon = activeSlot.querySelector(".slot-icon");
 
-// =====================
-// TAB NAVIGATION
-// =====================
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const target = tab.dataset.tab;
+    icon.setAttribute("visibility", "hidden");
+    icon.removeAttribute("href");
+    activeSlot.classList.remove("active");
+    delete activeSlot.dataset.module;
 
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-
-    tab.classList.add('active');
-    document.getElementById(target).classList.add('active');
-
-    if (target !== 'fittings') {
-      document.getElementById('module-info').classList.add('hidden');
-    }
+    document.getElementById("module-info").classList.add("hidden");
+    activeSlot = null;
   });
-});
 
-// =====================
-// MODULE LOGIC
-// =====================
-document.querySelectorAll(".module").forEach(module => {
-  module.addEventListener("click", () => {
-    if (!selectedSlot) return;
-
-    const moduleType = module.dataset.type;
-    const iconPath = module.dataset.icon;
-
-    if (!selectedSlot.classList.contains(moduleType)) {
-      alert("Wrong slot type!");
-      return;
-    }
-
-    const icon = selectedSlot.querySelector(".slot-icon");
-    icon.setAttribute("href", iconPath);
-    icon.setAttribute("visibility", "visible");
-
-    selectedSlot.classList.add("active");
-    selectedSlot.dataset.module = module.textContent;
-  });
-});
-
-function showModuleInfo(slot) {
-  activeSlot = slot;
-  const name = slot.dataset.module;
-  const data = MODULE_DATA[name];
-
-  document.getElementById("module-name").textContent = name;
-  document.getElementById("stat-pg").textContent = data.pg;
-  document.getElementById("stat-cap").textContent = data.cap;
-  document.getElementById("stat-bonus").textContent = data.bonus;
-
-  document.getElementById("module-info").classList.remove("hidden");
-}
-
-document.getElementById("remove-module").addEventListener("click", () => {
-  if (!activeSlot) return;
-  const icon = activeSlot.querySelector(".slot-icon");
-
-  icon.setAttribute("visibility", "hidden");
-  icon.removeAttribute("href");
-  activeSlot.classList.remove("active");
-  delete activeSlot.dataset.module;
-
-  document.getElementById("module-info").classList.add("hidden");
-  activeSlot = null;
 });
