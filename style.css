@@ -194,3 +194,40 @@ body {
 #remove-module:hover {
   background: #dc2626;
 }
+
+.ship-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #222;
+  border: 2px solid #555;
+  padding: 15px;
+  border-radius: 8px;
+  color: #fff;
+  z-index: 100;
+}
+
+.ship-menu.hidden {
+  display: none;
+}
+
+.ship-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ship-option {
+  background: #333;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.ship-option:hover {
+  background: #555;
+}
