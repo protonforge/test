@@ -27,14 +27,14 @@ let activeSlot = null;
 // =====================
 // SHIP MENU LOGIC
 // =====================
-const shipMenu = document.getElementById("ship-menu");
-const shipCore = document.querySelector(".ship-core");
+document.addEventListener("DOMContentLoaded", () => {
+  const shipCore = document.querySelector(".ship-core");
+  const shipMenu = document.getElementById("ship-menu");
 
-// Open ship menu when clicking ship core
-shipCore.addEventListener("click", () => {
-  shipMenu.classList.toggle("hidden");
+  shipCore.addEventListener("click", () => {
+    shipMenu.classList.toggle("hidden");
+  });
 });
-
 // Click ship in menu to generate slots
 document.querySelectorAll(".ship-option").forEach(option => {
   option.addEventListener("click", () => {
