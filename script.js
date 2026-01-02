@@ -49,9 +49,85 @@ document.addEventListener("DOMContentLoaded", () => {
   const classList = document.getElementById("class-list");
   const shipList = document.getElementById("ship-list");
 
-  // =====================
-  // Generate class buttons dynamically
-  // =====================
+// =====================
+// Dynamic Slot Creation
+// =====================
+function createSlots(shipName) {
+  const svg = document.getElementById("fitting-svg");
+  if (!svg) return;
+
+  // Clear old slots
+  svg.querySelectorAll(".slot").forEach(s => s.remove());
+
+  const ship = SHIPS[shipName];
+  if (!ship) return;
+
+  // Helper function: place slots in arcs
+  function placeSlots(type, count, startAngle, endAngle, radius = 140) {
+    for (let i = 0; i < count; i++) {
+      const angle = count === 1 ? (startAngle + endAngle) / 2
+        : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", `slot ${type}`);
+      g.setAttribute("data-slot", `${type}-${i+1}`);
+      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+
+      // Circle
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", 0);
+      circle.setAttribute("cy", -radius);
+      circle.setAttribute("r", 18);
+      g.appendChild(circle);
+
+      // Label
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", 0);
+      text.setAttribute("y", -radius + 35);
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = `${type[0].toUpperCase()}${i+1}`;
+      g.appendChild(text);
+
+      // Icon
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      image.setAttribute("class", "slot-icon");
+      image.setAttribute("x", -14);
+      image.setAttribute("y", -radius - 14);
+      image.setAttribute("width", 28);
+      image.setAttribute("height", 28);
+      image.setAttribute("visibility", "hidden");
+      g.appendChild(image);
+
+      svg.appendChild(g);
+
+      // Slot click logic
+      g.addEventListener("click", () => {
+        svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+        selectedSlot = g;
+        g.classList.add("selected");
+
+        if (g.dataset.module) showModuleInfo(g);
+      });
+    }
+  }
+
+  // Place slots for each type
+  placeSlots("high", ship.high, -60, 60);
+  placeSlots("mid", ship.mid, 90, 150);
+  placeSlots("low", ship.low, 210, 270);
+}
+
+// =====================
+// Main DOM Loaded
+// =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const shipCore = document.querySelector(".ship-core");
+  const classMenu = document.getElementById("class-menu");
+  const shipMenu = document.getElementById("ship-menu");
+  const classList = document.getElementById("class-list");
+  const shipList = document.getElementById("ship-list");
+
+  // Generate class buttons
   for (const shipClass in SHIP_CLASSES) {
     const div = document.createElement("div");
     div.className = "ship-option";
@@ -60,16 +136,12 @@ document.addEventListener("DOMContentLoaded", () => {
     classList.appendChild(div);
   }
 
-  // =====================
   // Click ship core → open class menu
-  // =====================
   shipCore.addEventListener("click", () => {
     classMenu.classList.toggle("hidden");
   });
 
-  // =====================
-  // Click class → show ships for that class
-  // =====================
+  // Click class → generate ship menu
   classList.addEventListener("click", (e) => {
     const option = e.target.closest(".ship-option");
     if (!option) return;
@@ -94,16 +166,16 @@ document.addEventListener("DOMContentLoaded", () => {
     shipMenu.classList.remove("hidden");
   });
 
-  // =====================
-  // Click ship → generate slots and close ship menu
-  // =====================
+  // Click ship → generate slots, close menu
   shipList.addEventListener("click", (e) => {
     const option = e.target.closest(".ship-option");
     if (!option) return;
 
     const selectedShip = option.dataset.ship;
-    createSlots(selectedShip); // your dynamic slot function
-    shipMenu.classList.add("hidden"); // auto-close
+    if (!selectedShip) return;
+
+    createSlots(selectedShip);
+    shipMenu.classList.add("hidden");
   });
 
   // =====================
@@ -174,5 +246,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("module-info").classList.add("hidden");
     activeSlot = null;
   });
-
 });
