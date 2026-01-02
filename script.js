@@ -3,12 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // SHIP DATA
   // =====================
   const SHIPS = {
-    Frigate: {
-      "Succubus": { high: 2, mid: 2, low: 2 }
-    },
-    Battleship: {
-      "Typhoon 2": { high: 8, mid: 4, low: 7 }
-    }
+    Frigate: { "Succubus": { high: 2, mid: 2, low: 2 } },
+    Battleship: { "Typhoon 2": { high: 8, mid: 4, low: 7 } }
   };
 
   // =====================
@@ -22,14 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const shipMenu = document.getElementById("ship-menu");
   const shipList = document.getElementById("ship-list");
 
-  // =====================
-  // SLOT CONSTANTS
-  // =====================
   const CENTER_X = 200;
   const CENTER_Y = 200;
-  const SLOT_RADIUS = 170; // distance from center
+  const SLOT_RADIUS = 170;
   const SLOT_SIZE = 18;
-  const SLOT_SPACING = 12; // degrees between slots
+  const SLOT_SPACING = 12;
   const BUFFER = 5;
 
   let selectedSlot = null;
@@ -56,8 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function placeCluster(type, count, startAngle) {
     if (count === 0) return;
-
-    // Slightly push clusters outward for high slot counts
     const radiusOffset = count > 4 ? (count - 4) * 3 : 0;
     const radius = SLOT_RADIUS + radiusOffset;
 
@@ -74,13 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
       circle.setAttribute("cy", -radius);
       circle.setAttribute("r", SLOT_SIZE);
       g.appendChild(circle);
-
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", 0);
-      text.setAttribute("y", -radius + 35);
-      text.setAttribute("text-anchor", "middle");
-      text.textContent = `${type[0].toUpperCase()}${i + 1}`;
-      g.appendChild(text);
 
       const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
       image.setAttribute("class", "slot-icon");
@@ -109,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createSlots(shipName) {
     svg.querySelectorAll(".slot").forEach(s => s.remove());
-
     let ship = null;
     for (let cls in SHIPS) {
       if (SHIPS[cls][shipName]) {
@@ -119,14 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!ship) return;
 
-    // Cluster half-widths for overlap adjustment
     const highHalf = clusterHalfWidth(ship.high);
-    const midHalf  = clusterHalfWidth(ship.mid);
-    const lowHalf  = clusterHalfWidth(ship.low);
+    const midHalf = clusterHalfWidth(ship.mid);
+    const lowHalf = clusterHalfWidth(ship.low);
 
     const HIGH_BASE = -60;
-    const MID_BASE  = 90;
-    const LOW_BASE  = 210;
+    const MID_BASE = 90;
+    const LOW_BASE = 210;
 
     let lowAngle = LOW_BASE;
     const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
@@ -141,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =====================
-  // SHIP MENU LOGIC
+  // SHIP MENU
   // =====================
   shipCore.addEventListener("click", () => {
     classMenu.classList.toggle("hidden");
@@ -187,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
       const target = tab.dataset.tab;
+      if (!target) return;
 
       document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
       document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
@@ -194,9 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tab.classList.add("active");
       document.getElementById(target).classList.add("active");
 
-      if (target !== "fittings") {
-        document.getElementById("module-info").classList.add("hidden");
-      }
+      if (target !== "fittings") document.getElementById("module-info").classList.add("hidden");
     });
   });
 
@@ -247,5 +228,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("module-info").classList.add("hidden");
     activeSlot = null;
   });
-
 });
