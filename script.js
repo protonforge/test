@@ -27,20 +27,28 @@ let activeSlot = null;
 // =====================
 // SHIP MENU LOGIC
 // =====================
-document.addEventListener("DOMContentLoaded", () => {
-  const shipCore = document.querySelector(".ship-core");
-  const shipMenu = document.getElementById("ship-menu");
 
+// Ship menu logic
+document.addEventListener("DOMContentLoaded", () => {
+  const shipMenu = document.getElementById("ship-menu");
+  const shipCore = document.querySelector(".ship-core");
+
+  // Open/close ship menu when clicking ship core
   shipCore.addEventListener("click", () => {
     shipMenu.classList.toggle("hidden");
   });
-});
-// Click ship in menu to generate slots
-document.querySelectorAll(".ship-option").forEach(option => {
-  option.addEventListener("click", () => {
-    const selectedShip = option.dataset.ship;
-    createSlots(selectedShip);
-    shipMenu.classList.add("hidden"); // close menu after selection
+
+  // Click a ship in the menu to generate slots and close the menu
+  document.querySelectorAll(".ship-option").forEach(option => {
+    option.addEventListener("click", () => {
+      const selectedShip = option.dataset.ship;
+
+      // Generate slots dynamically
+      createSlots(selectedShip);
+
+      // Close ship menu after selection
+      shipMenu.classList.add("hidden");
+    });
   });
 });
 
