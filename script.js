@@ -26,71 +26,46 @@ const shipList = document.getElementById("ship-list");
 // =====================
 const CENTER_X = 200;
 const CENTER_Y = 200;
-const SLOT_RADIUS = 165; // PUSHED OUTWARD (single shared circle) ffs this change screwed a bunch of stuff, Alex do not touch anymore
+const SLOT_RADIUS = 165; // shared radius
 const SLOT_SIZE = 18;
-const SLOT_SPREAD = 22; // degrees between slots inside a cluster
+const SLOT_SPACING = 22; // degrees between slots inside a cluster
+const BUFFER = 10; // buffer for cluster overlap
 
 // =====================
-// CREATE SLOTS
+// SLOT FUNCTIONS
 // =====================
-const highHalf = clusterHalfWidth(ship.high);
-const midHalf  = clusterHalfWidth(ship.mid);
-const lowHalf  = clusterHalfWidth(ship.low);
-
-// Base anchor angles (ideal positions)
-const HIGH_BASE = -60;
-const MID_BASE  = 90;
-const LOW_BASE  = 210;
-
-// Dynamic separation buffer
-const BUFFER = 10;
-
-// Adjust LOW cluster away from HIGH if needed
-let lowAngle = LOW_BASE;
-const overlap =
-  (HIGH_BASE + highHalf + BUFFER) >
-  (LOW_BASE - lowHalf);
-
-if (overlap) {
-  lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
+function clusterHalfWidth(slotCount) {
+  return slotCount <= 1 ? 0 : ((slotCount - 1) * SLOT_SPACING) / 2;
 }
 
-// Place clusters
-placeCluster("high", ship.high, HIGH_BASE);
-placeCluster("mid",  ship.mid,  MID_BASE);
-placeCluster("low",  ship.low,  lowAngle);
-
-
-// =====================
-// PLACE SLOT CLUSTER
-// =====================
 function placeCluster(type, count, startAngle) {
   if (count === 0) return;
 
-  const SPACING = 16; // degrees between slots
-  const RADIUS = 140;
-
   for (let i = 0; i < count; i++) {
-    const angle = startAngle + i * SPACING;
+    const angle = startAngle + i * SLOT_SPACING;
 
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", `slot ${type}`);
     g.setAttribute("data-slot", `${type}-${i + 1}`);
-    g.setAttribute(
-      "transform",
-      `translate(200 200) rotate(${angle})`
-    );
+    g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
 
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", 0);
-    circle.setAttribute("cy", -RADIUS);
-    circle.setAttribute("r", 18);
+    circle.setAttribute("cy", -SLOT_RADIUS);
+    circle.setAttribute("r", SLOT_SIZE);
     g.appendChild(circle);
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", 0);
+    text.setAttribute("y", -SLOT_RADIUS + 35);
+    text.setAttribute("text-anchor", "middle");
+    text.textContent = `${type[0].toUpperCase()}${i + 1}`;
+    g.appendChild(text);
 
     const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
     image.setAttribute("class", "slot-icon");
     image.setAttribute("x", -14);
-    image.setAttribute("y", -RADIUS - 14);
+    image.setAttribute("y", -SLOT_RADIUS - 14);
     image.setAttribute("width", 28);
     image.setAttribute("height", 28);
     image.setAttribute("visibility", "hidden");
@@ -100,6 +75,61 @@ function placeCluster(type, count, startAngle) {
   }
 }
 
+// =====================
+// CREATE SLOTS FOR A SHIP
+// =====================
+function createSlots(shipName) {
+  svg.querySelectorAll(".slot").forEach(s => s.remove());
+
+  // Find the ship object
+  let ship;
+  for (let cls in SHIPS) {
+    if (SHIPS[cls][shipName]) {
+      ship = SHIPS[cls][shipName];
+      break;
+    }
+  }
+  if (!ship) return;
+
+  // Compute dynamic angles
+  const highHalf = clusterHalfWidth(ship.high);
+  const midHalf  = clusterHalfWidth(ship.mid);
+  const lowHalf  = clusterHalfWidth(ship.low);
+
+  const HIGH_BASE = -60;
+  const MID_BASE  = 90;
+  const LOW_BASE  = 210;
+
+  let lowAngle = LOW_BASE;
+  const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
+  if (overlap) {
+    lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
+  }
+
+  placeCluster("high", ship.high, HIGH_BASE);
+  placeCluster("mid",  ship.mid, MID_BASE);
+  placeCluster("low",  ship.low, lowAngle);
+
+  attachSlotListeners(); // attach click listeners to new slots
+}
+
+// =====================
+// SLOT INTERACTION
+// =====================
+let selectedSlot = null;
+let activeSlot = null;
+
+function attachSlotListeners() {
+  document.querySelectorAll(".slot").forEach(slot => {
+    slot.addEventListener("click", () => {
+      document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+      selectedSlot = slot;
+      slot.classList.add("selected");
+
+      if (slot.dataset.module) showModuleInfo(slot);
+    });
+  });
+}
 
 // =====================
 // SHIP MENU LOGIC
@@ -109,7 +139,7 @@ shipCore.addEventListener("click", () => {
   shipMenu.classList.add("hidden");
 });
 
-// Populate ship classes
+// Populate ship classes dynamically
 Object.keys(SHIPS).forEach(cls => {
   const div = document.createElement("div");
   div.className = "ship-option";
@@ -118,7 +148,7 @@ Object.keys(SHIPS).forEach(cls => {
   classList.appendChild(div);
 });
 
-// Class → ship list
+// Class → Ship menu
 classList.addEventListener("click", e => {
   const cls = e.target.dataset.class;
   if (!cls) return;
@@ -176,24 +206,6 @@ const MODULE_DATA = {
   "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor" }
 };
 
-let selectedSlot = null;
-let activeSlot = null;
-
-// =====================
-// SLOT INTERACTION
-// =====================
-function attachSlotListeners() {
-  document.querySelectorAll(".slot").forEach(slot => {
-    slot.addEventListener("click", () => {
-      document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-      selectedSlot = slot;
-      slot.classList.add("selected");
-
-      if (slot.dataset.module) showModuleInfo(slot);
-    });
-  });
-}
-
 // =====================
 // MODULE FITTING
 // =====================
@@ -233,6 +245,7 @@ function showModuleInfo(slot) {
   document.getElementById("module-info").classList.remove("hidden");
 }
 
+// Remove module
 document.getElementById("remove-module").addEventListener("click", () => {
   if (!activeSlot) return;
 
