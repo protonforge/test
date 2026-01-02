@@ -91,3 +91,18 @@ function showModuleInfo(slot) {
 
   document.getElementById("module-info").classList.remove("hidden");
 }
+
+document.getElementById("remove-module").addEventListener("click", () => {
+  if (!activeSlot) return;
+
+  const icon = activeSlot.querySelector(".slot-icon");
+
+  icon.setAttribute("visibility", "hidden");
+  icon.removeAttribute("href");
+
+  activeSlot.classList.remove("active");
+  delete activeSlot.dataset.module;
+
+  document.getElementById("module-info").classList.add("hidden");
+  activeSlot = null;
+});
