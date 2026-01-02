@@ -125,14 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const MID_BASE = 90;
     const LOW_BASE = 190;
 
-    let lowAngle = LOW_BASE;
-    const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
-    if (overlap) lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
-
     // Place clusters
     placeCluster("high", ship.high, HIGH_BASE);
     placeCluster("mid", ship.mid, MID_BASE);
-    placeCluster("low", ship.low, lowAngle);
+    placeCluster("low", ship.low, LOW_BASE);
 
     attachSlotListeners();
   }
