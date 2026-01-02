@@ -16,3 +16,9 @@ tabs.forEach(tab => {
     document.getElementById(target).classList.add("active");
   });
 });
+
+document.querySelectorAll(".slot").forEach(slot => {
+  slot.addEventListener("click", () => {
+    slot.classList.toggle("active");
+  });
+});
