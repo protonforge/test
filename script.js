@@ -1,3 +1,61 @@
+
+const SHIPS = {
+  "Succubus": { high: 2, mid: 2, low: 2 },
+  "Typhoon 2": { high: 8, mid: 4, low: 7 },
+  // Add more ships here
+};
+
+function createSlots(shipName) {
+  const svg = document.getElementById("fitting-svg");
+
+  // Clear old slots
+  svg.querySelectorAll(".slot").forEach(s => s.remove());
+
+  const ship = SHIPS[shipName];
+  if (!ship) return;
+
+  // Helper: place slots in an arc
+  function placeSlots(type, count, startAngle, endAngle, radius = 140) {
+    for (let i = 0; i < count; i++) {
+      const angle = count === 1 ? (startAngle + endAngle) / 2 : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", `slot ${type}`);
+      g.setAttribute("data-slot", `${type}-${i+1}`);
+      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", 0);
+      circle.setAttribute("cy", -radius);
+      circle.setAttribute("r", 18);
+      g.appendChild(circle);
+
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", 0);
+      text.setAttribute("y", -radius + 35);
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = `${type[0].toUpperCase()}${i+1}`;
+      g.appendChild(text);
+
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      image.setAttribute("class", "slot-icon");
+      image.setAttribute("x", -14);
+      image.setAttribute("y", -radius - 14);
+      image.setAttribute("width", 28);
+      image.setAttribute("height", 28);
+      image.setAttribute("visibility", "hidden");
+      g.appendChild(image);
+
+      svg.appendChild(g);
+    }
+  }
+
+  // Create arcs for each slot type
+  placeSlots("high", ship.high, -60, 60);
+  placeSlots("mid", ship.mid, 90, 150);
+  placeSlots("low", ship.low, 210, 270);
+}
+
 // TAB NAVIGATION
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
