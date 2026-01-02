@@ -1,267 +1,243 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  // =====================
-  // DATA
-  // =====================
-  const SHIP_CLASSES = {
-    "Frigate": ["Succubus", "Gladius"],
-    "Destroyer": ["Typhoon 2", "Scythe"],
-    "Cruiser": ["Vanguard", "Nova"],
-    "Battlecruiser": ["Excalibur", "Reaper"],
-    "Battleship": ["Colossus", "Titan"],
-    "Carrier": ["Harbinger", "Archangel"],
-    "Assault Carrier": ["Judicator", "Valiant"],
-    "Dreadnought": ["Oblivion", "Leviathan"],
-    "Supercarrier": ["Behemoth", "Aegis"],
-    "Industrial": ["Hauler", "Freighter"]
-  };
-
-  const SHIPS = {
-    "Succubus": { high: 2, mid: 2, low: 2 },
-    "Gladius": { high: 3, mid: 2, low: 1 },
-    "Typhoon 2": { high: 8, mid: 4, low: 7 },
-    "Scythe": { high: 4, mid: 3, low: 3 },
-    "Vanguard": { high: 4, mid: 3, low: 2 },
-    "Nova": { high: 3, mid: 3, low: 3 },
-    "Excalibur": { high: 5, mid: 3, low: 3 },
-    "Reaper": { high: 4, mid: 4, low: 4 }
-  };
-
-  const MODULE_DATA = {
-    "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
-    "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster Rate of Fire" },
-    "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
-    "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
-    "Heat Sink": { pg: 5, cap: 0, bonus: "+15% Laser DPS" },
-    "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
-  };
-
-  // =====================
-  // ELEMENT REFERENCES
-  // =====================
-  const shipCore = document.querySelector(".ship-core");
-  const classMenu = document.getElementById("class-menu");
-  const shipMenu = document.getElementById("ship-menu");
-  const classList = document.getElementById("class-list");
-  const shipList = document.getElementById("ship-list");
-  const svg = document.getElementById("fitting-svg");
-
-  let selectedSlot = null;
-  let activeSlot = null;
-
-  // =====================
-  // TAB NAVIGATION
-  // =====================
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-
-      tab.classList.add('active');
-      document.getElementById(target).classList.add('active');
-
-      if (target !== 'fittings') {
-        document.getElementById('module-info').classList.add('hidden');
-      }
-    });
-  });
-
-  // =====================
-  // GENERATE CLASS BUTTONS
-  // =====================
-  for (const shipClass in SHIP_CLASSES) {
-    const div = document.createElement("div");
-    div.className = "ship-option";
-    div.dataset.shipClass = shipClass;
-    div.textContent = shipClass;
-    classList.appendChild(div);
+// =====================
+// SHIP DATA
+// =====================
+const SHIPS = {
+  Frigate: {
+    "Succubus": { high: 2, mid: 2, low: 2 }
+  },
+  Battleship: {
+    "Typhoon 2": { high: 8, mid: 4, low: 7 }
   }
+};
 
-  // =====================
-  // SHIP CORE CLICK → CLASS MENU
-  // =====================
-  shipCore.addEventListener("click", () => {
-    classMenu.classList.toggle("hidden");
-  });
+// =====================
+// DOM REFERENCES
+// =====================
+const svg = document.getElementById("fitting-svg");
+const shipCore = document.querySelector(".ship-core");
 
-  // =====================
-  // CLASS MENU CLICK → SHIP MENU
-  // =====================
-  classList.addEventListener("click", (e) => {
-    const option = e.target.closest(".ship-option");
-    if (!option || !option.dataset.shipClass) return;
+const classMenu = document.getElementById("class-menu");
+const classList = document.getElementById("class-list");
+const shipMenu = document.getElementById("ship-menu");
+const shipList = document.getElementById("ship-list");
 
-    const shipClass = option.dataset.shipClass;
-    const ships = SHIP_CLASSES[shipClass];
+// =====================
+// SLOT CONSTANTS
+// =====================
+const CENTER_X = 200;
+const CENTER_Y = 200;
+const SLOT_RADIUS = 170; // 🔴 PUSHED OUTWARD (single shared circle)
+const SLOT_SIZE = 18;
+const SLOT_SPREAD = 22; // degrees between slots inside a cluster
 
-    shipList.innerHTML = ""; // clear previous ships
-    ships.forEach(shipName => {
-      const div = document.createElement("div");
-      div.className = "ship-option";
-      div.dataset.ship = shipName;
-      div.textContent = shipName;
-      shipList.appendChild(div);
-    });
-
-    classMenu.classList.add("hidden");
-    shipMenu.classList.remove("hidden");
-  });
-
-  // =====================
-  // SHIP MENU CLICK → CREATE SLOTS & CLOSE MENU
-  // =====================
-  shipList.addEventListener("click", (e) => {
-    const option = e.target.closest(".ship-option");
-    if (!option || !option.dataset.ship) return;
-
-    const selectedShip = option.dataset.ship;
-    createSlots(selectedShip);
-    shipMenu.classList.add("hidden");
-  });
-
-  // =====================
-  // CREATE CIRCULAR SLOTS
-  // =====================
-  function createSlots(shipName) {
+// =====================
+// CREATE SLOTS
+// =====================
+function createSlots(shipName) {
+  // Clear existing slots
   svg.querySelectorAll(".slot").forEach(s => s.remove());
-  const ship = SHIPS[shipName];
+
+  let ship;
+  for (const cls in SHIPS) {
+    if (SHIPS[cls][shipName]) {
+      ship = SHIPS[cls][shipName];
+      break;
+    }
+  }
   if (!ship) return;
 
-  // Define the order of clusters
-  const clusters = [
-    { type: "high", count: ship.high },
-    { type: "mid", count: ship.mid },
-    { type: "low", count: ship.low }
-  ];
+  placeCluster("high", ship.high, 0);
+  placeCluster("mid", ship.mid, 120);
+  placeCluster("low", ship.low, 240);
 
-  // Determine cluster angles based on total slots for balance
-  const clusterSeparation = 120; // degrees between cluster centers
-  let baseAngle = -60; // starting angle for the first cluster
+  attachSlotListeners();
+}
 
-  clusters.forEach((cluster, idx) => {
-    const type = cluster.type;
-    const count = cluster.count;
-    if (count === 0) return;
+// =====================
+// PLACE SLOT CLUSTER
+// =====================
+function placeCluster(type, count, centerAngle) {
+  if (count === 0) return;
 
-    const centerAngle = baseAngle + idx * clusterSeparation;
+  const startAngle = centerAngle - (SLOT_SPREAD * (count - 1)) / 2;
 
-    // Calculate radius dynamically
-    const baseRadius = 120;
-    const slotSize = 36;
-    const minGap = 2;
-    let radius = baseRadius;
+  for (let i = 0; i < count; i++) {
+    const angle = startAngle + i * SLOT_SPREAD;
 
-    // Compute the angle each slot occupies
-    let slotArc = slotSize / radius * (180 / Math.PI);
-    let totalArc = count * slotArc + (count - 1) * minGap;
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", `slot ${type}`);
+    g.setAttribute("data-slot", `${type}-${i + 1}`);
+    g.setAttribute(
+      "transform",
+      `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`
+    );
 
-    const maxClusterArc = 60; // maximum arc per cluster
-    if (totalArc > maxClusterArc) {
-      radius = radius * totalArc / maxClusterArc;
-      slotArc = slotSize / radius * (180 / Math.PI);
-      totalArc = maxClusterArc;
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", 0);
+    circle.setAttribute("cy", -SLOT_RADIUS);
+    circle.setAttribute("r", SLOT_SIZE);
+    g.appendChild(circle);
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", 0);
+    text.setAttribute("y", -SLOT_RADIUS + 35);
+    text.setAttribute("text-anchor", "middle");
+    text.textContent = type[0].toUpperCase();
+    g.appendChild(text);
+
+    const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    image.setAttribute("class", "slot-icon");
+    image.setAttribute("x", -14);
+    image.setAttribute("y", -SLOT_RADIUS - 14);
+    image.setAttribute("width", 28);
+    image.setAttribute("height", 28);
+    image.setAttribute("visibility", "hidden");
+    g.appendChild(image);
+
+    svg.appendChild(g);
+  }
+}
+
+// =====================
+// SHIP MENU LOGIC
+// =====================
+shipCore.addEventListener("click", () => {
+  classMenu.classList.toggle("hidden");
+  shipMenu.classList.add("hidden");
+});
+
+// Populate ship classes
+Object.keys(SHIPS).forEach(cls => {
+  const div = document.createElement("div");
+  div.className = "ship-option";
+  div.dataset.class = cls;
+  div.textContent = cls;
+  classList.appendChild(div);
+});
+
+// Class → ship list
+classList.addEventListener("click", e => {
+  const cls = e.target.dataset.class;
+  if (!cls) return;
+
+  shipList.innerHTML = "";
+  Object.keys(SHIPS[cls]).forEach(shipName => {
+    const div = document.createElement("div");
+    div.className = "ship-option";
+    div.dataset.ship = shipName;
+    div.textContent = shipName;
+    shipList.appendChild(div);
+  });
+
+  classMenu.classList.add("hidden");
+  shipMenu.classList.remove("hidden");
+});
+
+// Ship selection
+shipList.addEventListener("click", e => {
+  const shipName = e.target.dataset.ship;
+  if (!shipName) return;
+
+  createSlots(shipName);
+  shipMenu.classList.add("hidden");
+});
+
+// =====================
+// TAB NAVIGATION
+// =====================
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = tab.dataset.tab;
+
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(target).classList.add("active");
+
+    if (target !== "fittings") {
+      document.getElementById("module-info").classList.add("hidden");
     }
+  });
+});
 
-    const startAngle = centerAngle - totalArc / 2;
+// =====================
+// MODULE DATA
+// =====================
+const MODULE_DATA = {
+  "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
+  "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster ROF" },
+  "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
+  "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
+  "Heat Sink": { pg: 5, cap: 0, bonus: "+15% DPS" },
+  "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor" }
+};
 
-    for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? centerAngle : startAngle + i * (slotArc + minGap);
+let selectedSlot = null;
+let activeSlot = null;
 
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", `slot ${type}`);
-      g.setAttribute("data-slot", `${type}-${i + 1}`);
-      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+// =====================
+// SLOT INTERACTION
+// =====================
+function attachSlotListeners() {
+  document.querySelectorAll(".slot").forEach(slot => {
+    slot.addEventListener("click", () => {
+      document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+      selectedSlot = slot;
+      slot.classList.add("selected");
 
-      // Circle
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", 0);
-      circle.setAttribute("cy", -radius);
-      circle.setAttribute("r", slotSize / 2);
-      g.appendChild(circle);
-
-      // Text
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", 0);
-      text.setAttribute("y", -radius + 35);
-      text.setAttribute("text-anchor", "middle");
-      text.textContent = `${type[0].toUpperCase()}${i + 1}`;
-      g.appendChild(text);
-
-      // Icon
-      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-      image.setAttribute("class", "slot-icon");
-      image.setAttribute("x", -14);
-      image.setAttribute("y", -radius - 14);
-      image.setAttribute("width", 28);
-      image.setAttribute("height", 28);
-      image.setAttribute("visibility", "hidden");
-      g.appendChild(image);
-
-      svg.appendChild(g);
-
-      // Slot click listener
-      g.addEventListener("click", () => {
-        svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-        selectedSlot = g;
-        g.classList.add("selected");
-
-        if (g.dataset.module) showModuleInfo(g);
-      });
-    }
+      if (slot.dataset.module) showModuleInfo(slot);
+    });
   });
 }
 
+// =====================
+// MODULE FITTING
+// =====================
+document.querySelectorAll(".module").forEach(module => {
+  module.addEventListener("click", () => {
+    if (!selectedSlot) return;
 
-  // =====================
-  // MODULE LOGIC
-  // =====================
-  document.querySelectorAll(".module").forEach(module => {
-    module.addEventListener("click", () => {
-      if (!selectedSlot) return;
+    const type = module.dataset.type;
+    const iconPath = module.dataset.icon;
 
-      const moduleType = module.dataset.type;
-      const iconPath = module.dataset.icon;
+    if (!selectedSlot.classList.contains(type)) {
+      alert("Wrong slot type!");
+      return;
+    }
 
-      if (!selectedSlot.classList.contains(moduleType)) {
-        alert("Wrong slot type!");
-        return;
-      }
+    const icon = selectedSlot.querySelector(".slot-icon");
+    icon.setAttribute("href", iconPath);
+    icon.setAttribute("visibility", "visible");
 
-      const icon = selectedSlot.querySelector(".slot-icon");
-      icon.setAttribute("href", iconPath);
-      icon.setAttribute("visibility", "visible");
-
-      selectedSlot.classList.add("active");
-      selectedSlot.dataset.module = module.textContent;
-    });
+    selectedSlot.dataset.module = module.textContent;
   });
+});
 
-  function showModuleInfo(slot) {
-    activeSlot = slot;
-    const name = slot.dataset.module;
-    const data = MODULE_DATA[name];
+// =====================
+// MODULE INFO
+// =====================
+function showModuleInfo(slot) {
+  activeSlot = slot;
+  const data = MODULE_DATA[slot.dataset.module];
+  if (!data) return;
 
-    document.getElementById("module-name").textContent = name;
-    document.getElementById("stat-pg").textContent = data.pg;
-    document.getElementById("stat-cap").textContent = data.cap;
-    document.getElementById("stat-bonus").textContent = data.bonus;
+  document.getElementById("module-name").textContent = slot.dataset.module;
+  document.getElementById("stat-pg").textContent = data.pg;
+  document.getElementById("stat-cap").textContent = data.cap;
+  document.getElementById("stat-bonus").textContent = data.bonus;
 
-    document.getElementById("module-info").classList.remove("hidden");
-  }
+  document.getElementById("module-info").classList.remove("hidden");
+}
 
-  document.getElementById("remove-module").addEventListener("click", () => {
-    if (!activeSlot) return;
-    const icon = activeSlot.querySelector(".slot-icon");
+document.getElementById("remove-module").addEventListener("click", () => {
+  if (!activeSlot) return;
 
-    icon.setAttribute("visibility", "hidden");
-    icon.removeAttribute("href");
-    activeSlot.classList.remove("active");
-    delete activeSlot.dataset.module;
+  const icon = activeSlot.querySelector(".slot-icon");
+  icon.setAttribute("visibility", "hidden");
+  icon.removeAttribute("href");
 
-    document.getElementById("module-info").classList.add("hidden");
-    activeSlot = null;
-  });
-
+  delete activeSlot.dataset.module;
+  document.getElementById("module-info").classList.add("hidden");
+  activeSlot = null;
 });
