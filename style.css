@@ -155,3 +155,7 @@ body {
 .module:hover {
   background: #374151;
 }
+
+.slot-icon {
+  pointer-events: none;
+}
