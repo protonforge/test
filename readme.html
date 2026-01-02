@@ -102,14 +102,22 @@
   </div>
 
   <!-- ===== Ship Selection Menu ===== -->
-  <div id="ship-menu" class="ship-menu hidden">
-    <h3>Select Your Ship</h3>
-    <div class="ship-list">
-      <div class="ship-option" data-ship="Succubus">Succubus</div>
-      <div class="ship-option" data-ship="Typhoon 2">Typhoon 2</div>
-      <!-- Add more ships here -->
-    </div>
+  <!-- Ship Class Menu -->
+<div id="class-menu" class="ship-menu hidden">
+  <h3>Select Ship Class</h3>
+  <div class="ship-list" id="class-list">
+    <!-- Class buttons will be generated dynamically -->
   </div>
+</div>
+
+<!-- Ship Menu (specific ships, appears after class selection) -->
+<div id="ship-menu" class="ship-menu hidden">
+  <h3>Select Your Ship</h3>
+  <div class="ship-list" id="ship-list">
+    <!-- Ship buttons will be generated dynamically based on class -->
+  </div>
+</div>
+
 
   <!-- ===== JS ===== -->
   <script src="script.js"></script>
