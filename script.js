@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   const CENTER_X = 200;
   const CENTER_Y = 200;
-  const SLOT_RADIUS = 165;
+  const SLOT_RADIUS = 140; // distance from center
   const SLOT_SIZE = 18;
-  const SLOT_SPACING = 22;
+  const SLOT_SPACING = 22; // degrees between slots
   const BUFFER = 10;
 
   let selectedSlot = null;
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =====================
-  // SLOT FUNCTIONS
+  // HELPER FUNCTIONS
   // =====================
   function clusterHalfWidth(slotCount) {
     return slotCount <= 1 ? 0 : ((slotCount - 1) * SLOT_SPACING) / 2;
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createSlots(shipName) {
     svg.querySelectorAll(".slot").forEach(s => s.remove());
 
-    let ship;
+    let ship = null;
     for (let cls in SHIPS) {
       if (SHIPS[cls][shipName]) {
         ship = SHIPS[cls][shipName];
@@ -115,20 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!ship) return;
 
+    // Cluster half-widths for overlap check
     const highHalf = clusterHalfWidth(ship.high);
     const midHalf  = clusterHalfWidth(ship.mid);
     const lowHalf  = clusterHalfWidth(ship.low);
 
+    // Base anchor angles
     const HIGH_BASE = -60;
     const MID_BASE  = 90;
     const LOW_BASE  = 210;
 
     let lowAngle = LOW_BASE;
     const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
-    if (overlap) {
-      lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
-    }
+    if (overlap) lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
 
+    // Place clusters
     placeCluster("high", ship.high, HIGH_BASE);
     placeCluster("mid", ship.mid, MID_BASE);
     placeCluster("low", ship.low, lowAngle);
@@ -144,7 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     shipMenu.classList.add("hidden");
   });
 
-  // Populate ship classes
   Object.keys(SHIPS).forEach(cls => {
     const div = document.createElement("div");
     div.className = "ship-option";
@@ -153,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
     classList.appendChild(div);
   });
 
-  // Class → ship list
   classList.addEventListener("click", e => {
     const cls = e.target.dataset.class;
     if (!cls) return;
