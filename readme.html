@@ -2,16 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Tool</title>
+  <title>EVE Echoes Tool</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="menu">
-    <button id="btn-fittings">Fittings</button>
-    <button id="btn-skills">Skills</button>
-    <button id="btn-implants">Implants</button>
+  <div class="tabs">
+    <button class="tab active" data-tab="fittings">Fittings</button>
+    <button class="tab" data-tab="skills">Skills</button>
+    <button class="tab" data-tab="implants">Implants</button>
   </div>
 
+  <div class="tab-content">
+    <div id="fittings" class="content active">
+      <h1>Fittings</h1>
+      <p>Fitting UI goes here.</p>
+    </div>
+
+    <div id="skills" class="content">
+      <h1>Skills</h1>
+      <p>Skills UI goes here.</p>
+    </div>
+
+    <div id="implants" class="content">
+      <h1>Implants</h1>
+      <p>Implants UI goes here.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
