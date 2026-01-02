@@ -1,0 +1,56 @@
+/* style.css */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0b0e14;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.tab {
+  padding: 12px 26px;
+  font-size: 16px;
+  color: #cbd5f5;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: #374151;
+}
+
+.tab.active {
+  background: #111827;
+  color: #ffffff;
+  border-bottom: 1px solid #111827;
+}
+
+/* Content */
+.tab-content {
+  padding: 40px;
+}
+
+.content {
+  display: none;
+}
+
+.content.active {
+  display: block;
+}
