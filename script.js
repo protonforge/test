@@ -95,8 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  }
-
   function attachSlotListeners() {
     document.querySelectorAll(".slot").forEach(slot => {
       slot.addEventListener("click", () => {
