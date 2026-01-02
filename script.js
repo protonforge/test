@@ -1,52 +1,41 @@
-// ====== TAB NAVIGATION ======
-const tabs = document.querySelectorAll('.tab');
-const contents = document.querySelectorAll('.content');
-
-tabs.forEach(tab => {
+// TAB NAVIGATION
+document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    const target = tab.dataset.tab; // e.g., "fittings", "skills", "implants"
+    const target = tab.dataset.tab;
 
-    // Remove 'active' from all tabs and contents
-    tabs.forEach(t => t.classList.remove('active'));
-    contents.forEach(c => c.classList.remove('active'));
+    // Deactivate all tabs
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
 
-    // Add 'active' to clicked tab and corresponding content
+    // Activate clicked tab and corresponding content
     tab.classList.add('active');
     document.getElementById(target).classList.add('active');
+
+    // OPTIONAL: hide module info when leaving Fittings tab
+    if (target !== 'fittings') {
+      document.getElementById('module-info').classList.add('hidden');
+    }
   });
 });
 
-// ====== MODULE FITTING LOGIC ======
-const MODULE_DATA = {
-  "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
-  "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster Rate of Fire" },
-  "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
-  "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
-  "Heat Sink": { pg: 5, cap: 0, bonus: "+15% Laser DPS" },
-  "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
-};
-
+// MODULE LOGIC
+const MODULE_DATA = { /* your module data */ };
 let selectedSlot = null;
 let activeSlot = null;
 
-// Slot selection
 document.querySelectorAll(".slot").forEach(slot => {
   slot.addEventListener("click", () => {
     document.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
     selectedSlot = slot;
     slot.classList.add("selected");
 
-    if (slot.dataset.module) {
-      showModuleInfo(slot);
-    }
+    if (slot.dataset.module) showModuleInfo(slot);
   });
 });
 
-// Module fitting
 document.querySelectorAll(".module").forEach(module => {
   module.addEventListener("click", () => {
     if (!selectedSlot) return;
-
     const moduleType = module.dataset.type;
     const iconPath = module.dataset.icon;
 
@@ -66,7 +55,6 @@ document.querySelectorAll(".module").forEach(module => {
 
 function showModuleInfo(slot) {
   activeSlot = slot;
-
   const name = slot.dataset.module;
   const data = MODULE_DATA[name];
 
@@ -80,11 +68,10 @@ function showModuleInfo(slot) {
 
 document.getElementById("remove-module").addEventListener("click", () => {
   if (!activeSlot) return;
-
   const icon = activeSlot.querySelector(".slot-icon");
+
   icon.setAttribute("visibility", "hidden");
   icon.removeAttribute("href");
-
   activeSlot.classList.remove("active");
   delete activeSlot.dataset.module;
 
