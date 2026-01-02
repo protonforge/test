@@ -30,29 +30,61 @@ let activeSlot = null;
 
 // Ship menu logic
 document.addEventListener("DOMContentLoaded", () => {
-
-  const shipMenu = document.getElementById("ship-menu");
   const shipCore = document.querySelector(".ship-core");
+  const classMenu = document.getElementById("class-menu");
+  const shipMenu = document.getElementById("ship-menu");
+  const classList = document.getElementById("class-list");
+  const shipList = document.getElementById("ship-list");
 
-  // Open/close ship menu when clicking ship core
+  // 1️⃣ Generate class buttons
+  for (const shipClass in SHIP_CLASSES) {
+    const div = document.createElement("div");
+    div.className = "ship-option";
+    div.dataset.shipClass = shipClass;
+    div.textContent = shipClass;
+    classList.appendChild(div);
+  }
+
+  // 2️⃣ Click ship core → open class menu
   shipCore.addEventListener("click", () => {
-    shipMenu.classList.toggle("hidden");
+    classMenu.classList.toggle("hidden");
   });
 
-  // Use event delegation to ensure clicks on ship options always work
-  shipMenu.addEventListener("click", (e) => {
+  // 3️⃣ Click class → show ships for that class
+  classList.addEventListener("click", (e) => {
+    const option = e.target.closest(".ship-option");
+    if (!option) return;
+
+    const shipClass = option.dataset.shipClass;
+    const ships = SHIP_CLASSES[shipClass];
+
+    // Clear old ships
+    shipList.innerHTML = "";
+
+    // Generate ship buttons
+    ships.forEach(shipName => {
+      const div = document.createElement("div");
+      div.className = "ship-option";
+      div.dataset.ship = shipName;
+      div.textContent = shipName;
+      shipList.appendChild(div);
+    });
+
+    // Hide class menu, show ship menu
+    classMenu.classList.add("hidden");
+    shipMenu.classList.remove("hidden");
+  });
+
+  // Click ship → generate slots and close ship menu
+  shipList.addEventListener("click", (e) => {
     const option = e.target.closest(".ship-option");
     if (!option) return;
 
     const selectedShip = option.dataset.ship;
 
-    // Generate slots dynamically
-    createSlots(selectedShip);
-
-    // Automatically close the ship menu
-        shipMenu.classList.add("hidden");
+    createSlots(selectedShip); // dynamic slot generation
+        shipMenu.classList.add("hidden"); // auto-close
   });
-
 });
 
 
