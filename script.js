@@ -6,6 +6,20 @@ const SHIPS = {
   "Typhoon 2": { high: 8, mid: 4, low: 7 },
 };
 
+const SHIP_CLASSES = {
+  "Frigate": ["Succubus"],
+  "Destroyer": ["Coercer"],
+  "Cruiser": ["Omen"],
+  "Battlecruiser": ["Oracle"],
+  "Battleship": ["Typhoon 2"],
+  "Carrier": ["Archon"],
+  "Assault Carrier": ["Anaconda"],
+  "Dreadnought": ["Bane"],
+  "Supercarrier": ["Wyvern"],
+  "Industrial": ["Tayra", "Rorqual"]
+};
+
+
 // =====================
 // MODULE DATA
 // =====================
