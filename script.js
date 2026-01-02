@@ -129,26 +129,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const ship = SHIPS[shipName];
   if (!ship) return;
 
-  function placeSlots(type, count, centerAngle, baseRadius = 140, slotSize = 36, minGap = 2) {
+  // Define the order of clusters
+  const clusters = [
+    { type: "high", count: ship.high },
+    { type: "mid", count: ship.mid },
+    { type: "low", count: ship.low }
+  ];
+
+  // Determine cluster angles based on total slots for balance
+  const clusterSeparation = 120; // degrees between cluster centers
+  let baseAngle = -60; // starting angle for the first cluster
+
+  clusters.forEach((cluster, idx) => {
+    const type = cluster.type;
+    const count = cluster.count;
     if (count === 0) return;
 
-    // Calculate radius adjustment for large slot counts
-    let radius = baseRadius;
-    const maxArc = 60; // maximum cluster arc in degrees
-    let slotArc = slotSize / radius * (180 / Math.PI); // degrees per slot
-    let gap = minGap;
+    const centerAngle = baseAngle + idx * clusterSeparation;
 
-    if (count * slotArc + (count - 1) * gap > maxArc) {
-      // increase radius to fit all slots within maxArc
-      radius = radius * (count * slotArc + (count - 1) * gap) / maxArc;
+    // Calculate radius dynamically
+    const baseRadius = 140;
+    const slotSize = 36;
+    const minGap = 2;
+    let radius = baseRadius;
+
+    // Compute the angle each slot occupies
+    let slotArc = slotSize / radius * (180 / Math.PI);
+    let totalArc = count * slotArc + (count - 1) * minGap;
+
+    const maxClusterArc = 60; // maximum arc per cluster
+    if (totalArc > maxClusterArc) {
+      radius = radius * totalArc / maxClusterArc;
       slotArc = slotSize / radius * (180 / Math.PI);
+      totalArc = maxClusterArc;
     }
 
-    const totalArc = count * slotArc + (count - 1) * gap;
     const startAngle = centerAngle - totalArc / 2;
 
     for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? centerAngle : startAngle + i * (slotArc + gap);
+      const angle = count === 1 ? centerAngle : startAngle + i * (slotArc + minGap);
 
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("class", `slot ${type}`);
@@ -191,15 +210,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (g.dataset.module) showModuleInfo(g);
       });
     }
-  }
-
-  // =====================
-  // Place clusters with automatic spacing
-  // =====================
-  placeSlots("high", ship.high, -30);  // top-left cluster
-  placeSlots("mid", ship.mid, 120);    // right cluster
-  placeSlots("low", ship.low, 240);    // bottom-left cluster
+  });
 }
+
 
   // =====================
   // MODULE LOGIC
