@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const CENTER_X = 200;
   const CENTER_Y = 200;
 
-  // 🔒 ONE ABSOLUTE RADIUS FOR ALL SHIPS
+  // ONE ABSOLUTE RADIUS FOR ALL SHIPS
   const SLOT_RADIUS = 155;
 
   const SLOT_SIZE = 18;
@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!ship) return;
 
-    // 🔒 Fixed cluster centers — never move
-    placeCluster("high", ship.high, -60);
+    //  Fixed cluster centers — never move
+    placeCluster("high", ship.high, -40);
     placeCluster("mid", ship.mid, 90);
     placeCluster("low", ship.low, 210);
 
