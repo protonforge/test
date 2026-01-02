@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     createSlots(selectedShip);
 
     // Automatically close the ship menu
-    shipMenu.classList.add("hidden");
+        shipMenu.classList.add("hidden");
   });
 
 });
