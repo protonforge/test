@@ -4,164 +4,114 @@
   <meta charset="UTF-8" />
   <title>EVE Echoes Tool</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== Ship Menu Styling ===== */
+    .ship-menu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      border: 2px solid #555;
+      padding: 15px;
+      border-radius: 8px;
+      color: #fff;
+      z-index: 100;
+    }
+
+    .ship-menu.hidden { display: none; }
+
+    .ship-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .ship-option {
+      background: #333;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s;
+    }
+
+    .ship-option:hover { background: #555; }
+
+    /* ===== SVG Styling ===== */
+    .outer-ring { fill: none; stroke: #999; stroke-width: 2; }
+    .ship-core { fill: #444; cursor: pointer; }
+    .ship-text { fill: #fff; font-size: 16px; pointer-events: none; }
+    .slot circle { fill: #666; cursor: pointer; }
+    .slot text { fill: #fff; font-size: 12px; pointer-events: none; }
+  </style>
 </head>
 <body>
 
+  <!-- ===== Tabs ===== -->
   <div class="tabs">
     <button class="tab active" data-tab="fittings">Fittings</button>
     <button class="tab" data-tab="skills">Skills</button>
     <button class="tab" data-tab="implants">Implants</button>
   </div>
 
+  <!-- ===== Tab Content ===== -->
   <div class="tab-content">
-<div id="fittings" class="content active">
-  <div class="fitting-layout">
+    <!-- ===== Fittings Tab ===== -->
+    <div id="fittings" class="content active">
+      <div class="fitting-layout">
+        <svg id="fitting-svg" viewBox="0 0 400 400" width="400" height="400">
+          <circle cx="200" cy="200" r="180" class="outer-ring" />
+          <circle cx="200" cy="200" r="60" class="ship-core" />
+          <text x="200" y="205" text-anchor="middle" class="ship-text">SHIP</text>
+        </svg>
 
-<svg id="fitting-svg" viewBox="0 0 400 400" width="400" height="400">
-  <!-- Ship core and outer ring -->
-  <circle cx="200" cy="200" r="180" class="outer-ring" />
-  <circle cx="200" cy="200" r="60" class="ship-core" />
-  <text x="200" y="205" text-anchor="middle" class="ship-text">SHIP</text>
-  <!-- SHIP SELECTION PANEL -->
-<div id="ship-menu" class="ship-menu hidden">
-  <h3>Select Your Ship</h3>
-  <div class="ship-list">
-    <div class="ship-option" data-ship="Succubus">Succubus</div>
-    <div class="ship-option" data-ship="Typhoon 2">Typhoon 2</div>
-    <!-- Add more ships here -->
-  </div>
-</div>
-
-
-  <!-- ===== HIGH SLOTS (Top Arc) ===== -->
-  <g class="slot high" data-slot="high-1" transform="translate(200 200) rotate(-30)">
-    <circle cx="0" cy="-140" r="18" />
-    <text x="0" y="-105" text-anchor="middle">H1</text>
-    <image class="slot-icon" x="-14" y="-154" width="28" height="28" visibility="hidden" />
-  </g>
-  <g class="slot high" data-slot="high-2" transform="translate(200 200) rotate(0)">
-    <circle cx="0" cy="-140" r="18" />
-    <text x="0" y="-105" text-anchor="middle">H2</text>
-    <image class="slot-icon" x="-14" y="-154" width="28" height="28" visibility="hidden" />
-  </g>
-  <g class="slot high" data-slot="high-3" transform="translate(200 200) rotate(30)">
-    <circle cx="0" cy="-140" r="18" />
-    <text x="0" y="-105" text-anchor="middle">H3</text>
-    <image cla
-
-
-        <!-- MID -->
-        <g class="slot mid" data-slot="mid-1" transform="translate(340 200)">
-          <circle r="18" />
-          <text y="35">M</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
-
-        <g class="slot mid" data-slot="mid-2" transform="translate(60 200)">
-          <circle r="18" />
-          <text y="35">M</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
-
-        <!-- LOW -->
-        <g class="slot low" data-slot="low-1" transform="translate(120 320)">
-          <circle r="18" />
-          <text y="35">L</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
-
-        <g class="slot low" data-slot="low-2" transform="translate(280 320)">
-          <circle r="18" />
-          <text y="35">L</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
-
-      </svg>
+        <!-- MODULE PANEL -->
+        <div class="module" data-type="high" data-icon="icons/laser.png">Laser Cannon</div>
+        <div class="module" data-type="high" data-icon="icons/pulse.png">Pulse Laser</div>
+        <div class="module" data-type="mid" data-icon="ee-logos/Modules/mid/warp-scrambler.png">Warp Scrambler</div>
+        <div class="module" data-type="mid" data-icon="icons/web.png">Webifier</div>
+        <div class="module" data-type="low" data-icon="icons/heatsink.png">Heat Sink</div>
+        <div class="module" data-type="low" data-icon="icons/rep.png">Armor Repairer</div>
+      </div>
     </div>
 
-    <!-- MODULE PANEL -->
-<div class="module" data-type="high" data-icon="icons/laser.png">
-  Laser Cannon
-</div>
+    <!-- ===== Module Info Panel ===== -->
+    <div id="module-info" class="module-info hidden">
+      <h3 id="module-name">Module Name</h3>
+      <div class="module-stats">
+        <div>Powergrid: <span id="stat-pg">0</span></div>
+        <div>Capacitor: <span id="stat-cap">0</span></div>
+        <div>Bonus: <span id="stat-bonus">—</span></div>
+      </div>
+      <button id="remove-module">Remove Module</button>
+    </div>
 
-<div class="module" data-type="high" data-icon="icons/pulse.png">
-  Pulse Laser
-</div>
-
-<div class="module" data-type="mid" data-icon="ee-logos/Modules/mid/warp-scrambler.png">
-  Warp Scrambler
-</div>
-
-<div class="module" data-type="mid" data-icon="icons/web.png">
-  Webifier
-</div>
-
-<div class="module" data-type="low" data-icon="icons/heatsink.png">
-  Heat Sink
-</div>
-
-<div class="module" data-type="low" data-icon="icons/rep.png">
-  Armor Repairer
-</div>
-
-
-  </div>
-</div>
-    
-    <!-- MODULE INFO PANEL -->
-<div id="module-info" class="module-info hidden">
-  <h3 id="module-name">Module Name</h3>
-
-  <div class="module-stats">
-    <div>Powergrid: <span id="stat-pg">0</span></div>
-    <div>Capacitor: <span id="stat-cap">0</span></div>
-    <div>Bonus: <span id="stat-bonus">—</span></div>
-  </div>
-
-  <button id="remove-module">Remove Module</button>
-</div>
-
-
-
+    <!-- ===== Skills Tab ===== -->
     <div id="skills" class="content">
       <h1>Skills</h1>
       <p>Skills UI goes here.</p>
     </div>
 
+    <!-- ===== Implants Tab ===== -->
     <div id="implants" class="content">
       <h1>Implants</h1>
       <p>Implants UI goes here.</p>
     </div>
   </div>
 
+  <!-- ===== Ship Selection Menu ===== -->
+  <div id="ship-menu" class="ship-menu hidden">
+    <h3>Select Your Ship</h3>
+    <div class="ship-list">
+      <div class="ship-option" data-ship="Succubus">Succubus</div>
+      <div class="ship-option" data-ship="Typhoon 2">Typhoon 2</div>
+      <!-- Add more ships here -->
+    </div>
+  </div>
+
+  <!-- ===== JS ===== -->
   <script src="script.js"></script>
 </body>
 </html>
