@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ship) return;
 
     //  Fixed cluster centers — never move
-    placeCluster("high", ship.high, -40);
+    placeCluster("high", ship.high, 0);
     placeCluster("mid", ship.mid, 90);
     placeCluster("low", ship.low, 210);
 
