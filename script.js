@@ -56,42 +56,42 @@ document.addEventListener("DOMContentLoaded", () => {
     // Optional: small outward push for clusters with lots of slots
     if (count > 4) radius += (count - 4) * 3;
 
-    for (let i = 0; i < count; i++) {
-      const angle = startAngle + i * SLOT_SPACING;
+  for (let i = 0; i < count; i++) {
+    const angle = startAngle + i * SLOT_SPACING;
 
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", `slot ${type}`);
-      g.setAttribute("data-slot", `${type}-${i + 1}`);
-      g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", `slot ${type}`);
+    g.setAttribute("data-slot", `${type}-${i + 1}`);
+    g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
 
-      // Circle
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", 0);
-      circle.setAttribute("cy", -radius);
-      circle.setAttribute("r", SLOT_SIZE);
-      g.appendChild(circle);
+    // Circle
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", 0);
+    circle.setAttribute("cy", -radius);
+    circle.setAttribute("r", SLOT_SIZE);
+    g.appendChild(circle);
 
-    // Image (upright)
-      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-      image.setAttribute("class", "slot-icon");
-      image.setAttribute("x", -14);
-      image.setAttribute("y", -radius - 14);
-      image.setAttribute("width", 28);
-      image.setAttribute("height", 28);
-      image.setAttribute("visibility", "hidden");
-      image.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
-      g.appendChild(image);
+  // Image (upright)
+    const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    image.setAttribute("class", "slot-icon");
+    image.setAttribute("x", -14);
+    image.setAttribute("y", -radius - 14);
+    image.setAttribute("width", 28);
+    image.setAttribute("height", 28);
+    image.setAttribute("visibility", "hidden");
+     image.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
+     g.appendChild(image);
 
-      // Optional text labels
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", 0);
-      text.setAttribute("y", -radius + 35);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
-      text.textContent = `${type[0].toUpperCase()}${i + 1}`;
-      g.appendChild(text);
+     // Optional text labels
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", 0);
+    text.setAttribute("y", -radius + 35);
+     text.setAttribute("text-anchor", "middle");
+    text.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
+    text.textContent = `${type[0].toUpperCase()}${i + 1}`;
+     g.appendChild(text);
 
-      svg.appendChild(g);
+     svg.appendChild(g);
     }
   }
 
