@@ -1,151 +1,54 @@
-// =====================
-// SHIP DATA
-// =====================
-const SHIPS = {
-  "Succubus": { high: 2, mid: 2, low: 2 },
-  "Typhoon 2": { high: 8, mid: 4, low: 7 },
-};
-
-const SHIP_CLASSES = {
-  "Frigate": ["Succubus"],
-  "Destroyer": ["Coercer"],
-  "Cruiser": ["Omen"],
-  "Battlecruiser": ["Oracle"],
-  "Battleship": ["Typhoon 2"],
-  "Carrier": ["Archon"],
-  "Assault Carrier": ["Anaconda"],
-  "Dreadnought": ["Bane"],
-  "Supercarrier": ["Wyvern"],
-  "Industrial": ["Tayra", "Rorqual"]
-};
-
-// =====================
-// Ship Classes & Ships
-// =====================
-const SHIP_CLASSES = {
-  "Frigate": ["Succubus", "Gladius"],
-  "Destroyer": ["Typhoon 2", "Scythe"],
-  "Cruiser": ["Vanguard", "Nova"],
-  "Battlecruiser": ["Excalibur", "Reaper"],
-  "Battleship": ["Colossus", "Titan"],
-  "Carrier": ["Harbinger", "Archangel"],
-  "Assault Carrier": ["Judicator", "Valiant"],
-  "Dreadnought": ["Oblivion", "Leviathan"],
-  "Supercarrier": ["Behemoth", "Aegis"],
-  "Industrial": ["Hauler", "Freighter"]
-};
-
-// =====================
-// Ship slot configurations
-// =====================
-const SHIPS = {
-  "Succubus": { high: 2, mid: 2, low: 2 },
-  "Gladius": { high: 3, mid: 2, low: 1 },
-  "Typhoon 2": { high: 8, mid: 4, low: 7 },
-  "Scythe": { high: 4, mid: 3, low: 3 },
-  "Vanguard": { high: 4, mid: 3, low: 2 },
-  "Nova": { high: 3, mid: 3, low: 3 },
-  "Excalibur": { high: 5, mid: 3, low: 3 },
-  "Reaper": { high: 4, mid: 4, low: 4 },
-  // add more ships as needed
-};
-
-// =====================
-// Modules
-// =====================
-const MODULE_DATA = {
-  "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
-  "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster Rate of Fire" },
-  "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
-  "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
-  "Heat Sink": { pg: 5, cap: 0, bonus: "+15% Laser DPS" },
-  "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
-};
-
-// =====================
-// Selected slots
-// =====================
-let selectedSlot = null;
-let activeSlot = null;
-
-// =====================
-// Function: Create circular slots for ship
-// =====================
-function createSlots(shipName) {
-  const svg = document.getElementById("fitting-svg");
-  if (!svg) return;
-
-  // Clear old slots
-  svg.querySelectorAll(".slot").forEach(s => s.remove());
-
-  const ship = SHIPS[shipName];
-  if (!ship) return;
-
-  function placeSlots(type, count, startAngle, endAngle, radius = 140) {
-    for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? (startAngle + endAngle) / 2
-        : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
-
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", `slot ${type}`);
-      g.setAttribute("data-slot", `${type}-${i+1}`);
-      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
-
-      // Circle
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", 0);
-      circle.setAttribute("cy", -radius);
-      circle.setAttribute("r", 18);
-      g.appendChild(circle);
-
-      // Label
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", 0);
-      text.setAttribute("y", -radius + 35);
-      text.setAttribute("text-anchor", "middle");
-      text.textContent = `${type[0].toUpperCase()}${i+1}`;
-      g.appendChild(text);
-
-      // Icon
-      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-      image.setAttribute("class", "slot-icon");
-      image.setAttribute("x", -14);
-      image.setAttribute("y", -radius - 14);
-      image.setAttribute("width", 28);
-      image.setAttribute("height", 28);
-      image.setAttribute("visibility", "hidden");
-      g.appendChild(image);
-
-      svg.appendChild(g);
-
-      // Slot click logic
-      g.addEventListener("click", () => {
-        svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-        selectedSlot = g;
-        g.classList.add("selected");
-
-        if (g.dataset.module) showModuleInfo(g);
-      });
-    }
-  }
-
-  // Place slots
-  placeSlots("high", ship.high, -60, 60);
-  placeSlots("mid", ship.mid, 90, 150);
-  placeSlots("low", ship.low, 210, 270);
-}
-
-// =====================
-// DOM Loaded
-// =====================
 document.addEventListener("DOMContentLoaded", () => {
+
+  // =====================
+  // Ship Classes & Ships
+  // =====================
+  const SHIP_CLASSES = {
+    "Frigate": ["Succubus", "Gladius"],
+    "Destroyer": ["Typhoon 2", "Scythe"],
+    "Cruiser": ["Vanguard", "Nova"],
+    "Battlecruiser": ["Excalibur", "Reaper"],
+    "Battleship": ["Colossus", "Titan"],
+    "Carrier": ["Harbinger", "Archangel"],
+    "Assault Carrier": ["Judicator", "Valiant"],
+    "Dreadnought": ["Oblivion", "Leviathan"],
+    "Supercarrier": ["Behemoth", "Aegis"],
+    "Industrial": ["Hauler", "Freighter"]
+  };
+
+  const SHIPS = {
+    "Succubus": { high: 2, mid: 2, low: 2 },
+    "Gladius": { high: 3, mid: 2, low: 1 },
+    "Typhoon 2": { high: 8, mid: 4, low: 7 },
+    "Scythe": { high: 4, mid: 3, low: 3 },
+    "Vanguard": { high: 4, mid: 3, low: 2 },
+    "Nova": { high: 3, mid: 3, low: 3 },
+    "Excalibur": { high: 5, mid: 3, low: 3 },
+    "Reaper": { high: 4, mid: 4, low: 4 },
+  };
+
+  const MODULE_DATA = {
+    "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
+    "Pulse Laser": { pg: 10, cap: 6, bonus: "Faster Rate of Fire" },
+    "Warp Scrambler": { pg: 15, cap: 12, bonus: "-2 Warp Strength" },
+    "Webifier": { pg: 8, cap: 5, bonus: "-60% Velocity" },
+    "Heat Sink": { pg: 5, cap: 0, bonus: "+15% Laser DPS" },
+    "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
+  };
+
+  let selectedSlot = null;
+  let activeSlot = null;
+
+  const svg = document.getElementById("fitting-svg");
   const shipCore = document.querySelector(".ship-core");
   const classMenu = document.getElementById("class-menu");
   const shipMenu = document.getElementById("ship-menu");
   const classList = document.getElementById("class-list");
   const shipList = document.getElementById("ship-list");
 
-  // 1️⃣ Generate class buttons
+  // =====================
+  // Generate class buttons
+  // =====================
   for (const shipClass in SHIP_CLASSES) {
     const div = document.createElement("div");
     div.className = "ship-option";
@@ -154,12 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     classList.appendChild(div);
   }
 
-  // 2️⃣ Click ship core → open class menu
+  // =====================
+  // SHIP CORE CLICK → CLASS MENU
+  // =====================
   shipCore.addEventListener("click", () => {
     classMenu.classList.toggle("hidden");
   });
 
-  // 3️⃣ Click class → generate ship menu
+  // =====================
+  // CLASS MENU CLICK → SHIP MENU
+  // =====================
   classList.addEventListener("click", (e) => {
     let option = e.target;
     while (option && !option.dataset.shipClass) option = option.parentElement;
@@ -169,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const ships = SHIP_CLASSES[shipClass];
 
     shipList.innerHTML = "";
-
     ships.forEach(shipName => {
       const div = document.createElement("div");
       div.className = "ship-option";
@@ -182,7 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     shipMenu.classList.remove("hidden");
   });
 
-  // 4️⃣ Click ship → generate slots & close menu
+  // =====================
+  // SHIP MENU CLICK → CREATE SLOTS & CLOSE
+  // =====================
   shipList.addEventListener("click", (e) => {
     let option = e.target;
     while (option && !option.dataset.ship) option = option.parentElement;
@@ -194,6 +102,71 @@ document.addEventListener("DOMContentLoaded", () => {
     createSlots(selectedShip);
     shipMenu.classList.add("hidden");
   });
+
+  // =====================
+  // CREATE CIRCULAR SLOTS
+  // =====================
+  function createSlots(shipName) {
+    if (!svg) return;
+
+    // Clear old slots
+    svg.querySelectorAll(".slot").forEach(s => s.remove());
+
+    const ship = SHIPS[shipName];
+    if (!ship) return;
+
+    function placeSlots(type, count, startAngle, endAngle, radius = 140) {
+      for (let i = 0; i < count; i++) {
+        const angle = count === 1 ? (startAngle + endAngle) / 2
+          : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("class", `slot ${type}`);
+        g.setAttribute("data-slot", `${type}-${i+1}`);
+        g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+
+        // Circle
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", 0);
+        circle.setAttribute("cy", -radius);
+        circle.setAttribute("r", 18);
+        g.appendChild(circle);
+
+        // Text
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", 0);
+        text.setAttribute("y", -radius + 35);
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = `${type[0].toUpperCase()}${i+1}`;
+        g.appendChild(text);
+
+        // Icon
+        const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        image.setAttribute("class", "slot-icon");
+        image.setAttribute("x", -14);
+        image.setAttribute("y", -radius - 14);
+        image.setAttribute("width", 28);
+        image.setAttribute("height", 28);
+        image.setAttribute("visibility", "hidden");
+        g.appendChild(image);
+
+        svg.appendChild(g);
+
+        // Slot click
+        g.addEventListener("click", () => {
+          svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+          selectedSlot = g;
+          g.classList.add("selected");
+
+          if (g.dataset.module) showModuleInfo(g);
+        });
+      }
+    }
+
+    placeSlots("high", ship.high, -60, 60);
+    placeSlots("mid", ship.mid, 90, 150);
+    placeSlots("low", ship.low, 210, 270);
+  }
 
   // =====================
   // TAB NAVIGATION
@@ -263,4 +236,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("module-info").classList.add("hidden");
     activeSlot = null;
   });
+
 });
