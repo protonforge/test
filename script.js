@@ -18,12 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const shipMenu = document.getElementById("ship-menu");
   const shipList = document.getElementById("ship-list");
 
+  // =====================
+  // SLOT CONSTANTS
+  // =====================
   const CENTER_X = 200;
   const CENTER_Y = 200;
   const SLOT_RADIUS = 150;
   const SLOT_SIZE = 18;
-  const SLOT_SPACING = 14;
-  const BUFFER = 5;
+
+  const BASE_SPACING = 14;
+  const MAX_CLUSTER_ARC = 120; // max degrees a cluster may span
 
   let selectedSlot = null;
   let activeSlot = null;
@@ -41,56 +45,52 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =====================
-  // HELPER FUNCTIONS
+  // SLOT CREATION
   // =====================
-  function clusterHalfWidth(slotCount) {
-    return slotCount <= 1 ? 0 : ((slotCount - 1) * SLOT_SPACING) / 2;
-  }
-
-  function placeCluster(type, count, startAngle) {
+  function placeCluster(type, count, baseAngle) {
     if (count === 0) return;
 
-    // All clusters use the same base radius
-    let radius = SLOT_RADIUS;
+    const spacing = Math.min(
+      BASE_SPACING,
+      MAX_CLUSTER_ARC / Math.max(count - 1, 1)
+    );
 
-    // Optional: small outward push for clusters with lots of slots
-    if (count > 4) radius += (count - 4) * 3;
+    const totalWidth = spacing * (count - 1);
+    const startAngle = baseAngle - totalWidth / 2;
 
-  for (let i = 0; i < count; i++) {
-    const angle = startAngle + i * SLOT_SPACING;
+    for (let i = 0; i < count; i++) {
+      const angle = startAngle + i * spacing;
 
-    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.setAttribute("class", `slot ${type}`);
-    g.setAttribute("data-slot", `${type}-${i + 1}`);
-    g.setAttribute("transform", `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`);
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", `slot ${type}`);
+      g.setAttribute("data-slot", `${type}-${i + 1}`);
+      g.setAttribute(
+        "transform",
+        `translate(${CENTER_X} ${CENTER_Y}) rotate(${angle})`
+      );
 
-    // Circle
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", 0);
-    circle.setAttribute("cy", -radius);
-    circle.setAttribute("r", SLOT_SIZE);
-    g.appendChild(circle);
+      // Slot circle
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", 0);
+      circle.setAttribute("cy", -SLOT_RADIUS);
+      circle.setAttribute("r", SLOT_SIZE);
+      g.appendChild(circle);
 
-  // Image (upright)
-    const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    image.setAttribute("class", "slot-icon");
-    image.setAttribute("x", -14);
-    image.setAttribute("y", -radius - 14);
-    image.setAttribute("width", 28);
-    image.setAttribute("height", 28);
-    image.setAttribute("visibility", "hidden");
-     image.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
-     g.appendChild(image);
+      // Upright icon
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      image.setAttribute("class", "slot-icon");
+      image.setAttribute("x", -14);
+      image.setAttribute("y", -SLOT_RADIUS - 14);
+      image.setAttribute("width", 28);
+      image.setAttribute("height", 28);
+      image.setAttribute("visibility", "hidden");
+      image.setAttribute(
+        "transform",
+        `rotate(${-angle} 0 ${-SLOT_RADIUS})`
+      );
+      g.appendChild(image);
 
-     // Optional text labels
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", 0);
-    text.setAttribute("y", -radius + 35);
-     text.setAttribute("text-anchor", "middle");
-    text.setAttribute("transform", `rotate(${-angle} 0 ${-radius})`);
-     g.appendChild(text);
-
-     svg.appendChild(g);
+      svg.appendChild(g);
     }
   }
 
@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createSlots(shipName) {
     svg.querySelectorAll(".slot").forEach(s => s.remove());
+
     let ship = null;
     for (let cls in SHIPS) {
       if (SHIPS[cls][shipName]) {
@@ -117,18 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (!ship) return;
 
-    const highHalf = clusterHalfWidth(ship.high);
-    const midHalf = clusterHalfWidth(ship.mid);
-    const lowHalf = clusterHalfWidth(ship.low);
-
-    const HIGH_BASE = -60;
-    const MID_BASE = 90;
-    const LOW_BASE = 190;
-
-    // Place clusters
-    placeCluster("high", ship.high, HIGH_BASE);
-    placeCluster("mid", ship.mid, MID_BASE);
-    placeCluster("low", ship.low, LOW_BASE);
+    placeCluster("high", ship.high, -60);
+    placeCluster("mid", ship.mid, 90);
+    placeCluster("low", ship.low, 210);
 
     attachSlotListeners();
   }
@@ -175,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // TAB NAVIGATION
+  // TAB NAVIGATION (FIXED)
   // =====================
   document.querySelectorAll(".tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -186,9 +178,11 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
 
       tab.classList.add("active");
-      document.getElementById(target).classList.add("active");
+      document.getElementById(target)?.classList.add("active");
 
-      if (target !== "fittings") document.getElementById("module-info").classList.add("hidden");
+      if (target !== "fittings") {
+        document.getElementById("module-info")?.classList.add("hidden");
+      }
     });
   });
 
