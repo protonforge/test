@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const CENTER_X = 200;
   const CENTER_Y = 200;
-  const SLOT_RADIUS = 170;
+  const SLOT_RADIUS = 150;
   const SLOT_SIZE = 18;
   const SLOT_SPACING = 12;
   const BUFFER = 5;
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const HIGH_BASE = -60;
     const MID_BASE = 90;
-    const LOW_BASE = 210;
+    const LOW_BASE = 190;
 
     let lowAngle = LOW_BASE;
     const overlap = (HIGH_BASE + highHalf + BUFFER) > (LOW_BASE - lowHalf);
