@@ -19,9 +19,39 @@ const SHIP_CLASSES = {
   "Industrial": ["Tayra", "Rorqual"]
 };
 
+// =====================
+// Ship Classes & Ships
+// =====================
+const SHIP_CLASSES = {
+  "Frigate": ["Succubus", "Gladius"],
+  "Destroyer": ["Typhoon 2", "Scythe"],
+  "Cruiser": ["Vanguard", "Nova"],
+  "Battlecruiser": ["Excalibur", "Reaper"],
+  "Battleship": ["Colossus", "Titan"],
+  "Carrier": ["Harbinger", "Archangel"],
+  "Assault Carrier": ["Judicator", "Valiant"],
+  "Dreadnought": ["Oblivion", "Leviathan"],
+  "Supercarrier": ["Behemoth", "Aegis"],
+  "Industrial": ["Hauler", "Freighter"]
+};
 
 // =====================
-// MODULE DATA
+// Ship slot configurations
+// =====================
+const SHIPS = {
+  "Succubus": { high: 2, mid: 2, low: 2 },
+  "Gladius": { high: 3, mid: 2, low: 1 },
+  "Typhoon 2": { high: 8, mid: 4, low: 7 },
+  "Scythe": { high: 4, mid: 3, low: 3 },
+  "Vanguard": { high: 4, mid: 3, low: 2 },
+  "Nova": { high: 3, mid: 3, low: 3 },
+  "Excalibur": { high: 5, mid: 3, low: 3 },
+  "Reaper": { high: 4, mid: 4, low: 4 },
+  // add more ships as needed
+};
+
+// =====================
+// Modules
 // =====================
 const MODULE_DATA = {
   "Laser Cannon": { pg: 12, cap: 8, bonus: "High EM Damage" },
@@ -33,24 +63,13 @@ const MODULE_DATA = {
 };
 
 // =====================
-// GLOBAL VARIABLES
+// Selected slots
 // =====================
 let selectedSlot = null;
 let activeSlot = null;
 
 // =====================
-// SHIP MENU LOGIC
-// =====================
-
-document.addEventListener("DOMContentLoaded", () => {
-  const shipCore = document.querySelector(".ship-core");
-  const classMenu = document.getElementById("class-menu");
-  const shipMenu = document.getElementById("ship-menu");
-  const classList = document.getElementById("class-list");
-  const shipList = document.getElementById("ship-list");
-
-// =====================
-// Dynamic Slot Creation
+// Function: Create circular slots for ship
 // =====================
 function createSlots(shipName) {
   const svg = document.getElementById("fitting-svg");
@@ -62,7 +81,6 @@ function createSlots(shipName) {
   const ship = SHIPS[shipName];
   if (!ship) return;
 
-  // Helper function: place slots in arcs
   function placeSlots(type, count, startAngle, endAngle, radius = 140) {
     for (let i = 0; i < count; i++) {
       const angle = count === 1 ? (startAngle + endAngle) / 2
@@ -111,14 +129,14 @@ function createSlots(shipName) {
     }
   }
 
-  // Place slots for each type
+  // Place slots
   placeSlots("high", ship.high, -60, 60);
   placeSlots("mid", ship.mid, 90, 150);
   placeSlots("low", ship.low, 210, 270);
 }
 
 // =====================
-// Main DOM Loaded
+// DOM Loaded
 // =====================
 document.addEventListener("DOMContentLoaded", () => {
   const shipCore = document.querySelector(".ship-core");
@@ -127,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const classList = document.getElementById("class-list");
   const shipList = document.getElementById("ship-list");
 
-  // Generate class buttons
+  // 1️⃣ Generate class buttons
   for (const shipClass in SHIP_CLASSES) {
     const div = document.createElement("div");
     div.className = "ship-option";
@@ -136,23 +154,22 @@ document.addEventListener("DOMContentLoaded", () => {
     classList.appendChild(div);
   }
 
-  // Click ship core → open class menu
+  // 2️⃣ Click ship core → open class menu
   shipCore.addEventListener("click", () => {
     classMenu.classList.toggle("hidden");
   });
 
-  // Click class → generate ship menu
+  // 3️⃣ Click class → generate ship menu
   classList.addEventListener("click", (e) => {
-    const option = e.target.closest(".ship-option");
+    let option = e.target;
+    while (option && !option.dataset.shipClass) option = option.parentElement;
     if (!option) return;
 
     const shipClass = option.dataset.shipClass;
     const ships = SHIP_CLASSES[shipClass];
 
-    // Clear old ships
     shipList.innerHTML = "";
 
-    // Generate ship buttons
     ships.forEach(shipName => {
       const div = document.createElement("div");
       div.className = "ship-option";
@@ -161,14 +178,14 @@ document.addEventListener("DOMContentLoaded", () => {
       shipList.appendChild(div);
     });
 
-    // Hide class menu, show ship menu
     classMenu.classList.add("hidden");
     shipMenu.classList.remove("hidden");
   });
 
-  // Click ship → generate slots, close menu
+  // 4️⃣ Click ship → generate slots & close menu
   shipList.addEventListener("click", (e) => {
-    const option = e.target.closest(".ship-option");
+    let option = e.target;
+    while (option && !option.dataset.ship) option = option.parentElement;
     if (!option) return;
 
     const selectedShip = option.dataset.ship;
