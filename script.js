@@ -33,26 +33,33 @@ const SLOT_SPREAD = 22; // degrees between slots inside a cluster
 // =====================
 // CREATE SLOTS
 // =====================
-function createSlots(shipName) {
-  // Clear existing slots
-  svg.querySelectorAll(".slot").forEach(s => s.remove());
+const highHalf = clusterHalfWidth(ship.high);
+const midHalf  = clusterHalfWidth(ship.mid);
+const lowHalf  = clusterHalfWidth(ship.low);
 
-  let ship;
-  for (const cls in SHIPS) {
-    if (SHIPS[cls][shipName]) {
-      ship = SHIPS[cls][shipName];
-      break;
-    }
-  }
-  if (!ship) return;
+// Base anchor angles (ideal positions)
+const HIGH_BASE = -60;
+const MID_BASE  = 90;
+const LOW_BASE  = 210;
 
-  placeCluster("high", ship.high, -60); // top arc
-  placeCluster("mid",  ship.mid,  90);  // right arc
-  placeCluster("low",  ship.low,  210); // bottom-left arc
+// Dynamic separation buffer
+const BUFFER = 10;
 
+// Adjust LOW cluster away from HIGH if needed
+let lowAngle = LOW_BASE;
+const overlap =
+  (HIGH_BASE + highHalf + BUFFER) >
+  (LOW_BASE - lowHalf);
 
-  attachSlotListeners();
+if (overlap) {
+  lowAngle += (HIGH_BASE + highHalf + BUFFER) - (LOW_BASE - lowHalf);
 }
+
+// Place clusters
+placeCluster("high", ship.high, HIGH_BASE);
+placeCluster("mid",  ship.mid,  MID_BASE);
+placeCluster("low",  ship.low,  lowAngle);
+
 
 // =====================
 // PLACE SLOT CLUSTER
