@@ -17,52 +17,28 @@
 <div id="fittings" class="content active">
   <div class="fitting-layout">
 
-    <!-- SVG FITTING -->
-    <div class="fitting-container">
-      <svg id="fitting-svg" viewBox="0 0 400 400" width="400" height="400">
+<svg id="fitting-svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Ship core and outer ring -->
+  <circle cx="200" cy="200" r="180" class="outer-ring" />
+  <circle cx="200" cy="200" r="60" class="ship-core" />
+  <text x="200" y="205" text-anchor="middle" class="ship-text">SHIP</text>
 
-        <circle cx="200" cy="200" r="180" class="outer-ring" />
-
-        <circle cx="200" cy="200" r="60" class="ship-core" />
-        <text x="200" y="205" text-anchor="middle" class="ship-text">
-          SHIP
-        </text>
-
-  <!-- HIGH SLOTS: 3 slots spaced in top-left arc -->
+  <!-- ===== HIGH SLOTS (Top Arc) ===== -->
   <g class="slot high" data-slot="high-1" transform="translate(200 200) rotate(-30)">
-    <circle cx="0" cy="-140" r="18"/>
+    <circle cx="0" cy="-140" r="18" />
     <text x="0" y="-105" text-anchor="middle">H1</text>
-    <image class="slot-icon" x="-14" y="-154" width="28" height="28" visibility="hidden"/>
+    <image class="slot-icon" x="-14" y="-154" width="28" height="28" visibility="hidden" />
   </g>
+  <g class="slot high" data-slot="high-2" transform="translate(200 200) rotate(0)">
+    <circle cx="0" cy="-140" r="18" />
+    <text x="0" y="-105" text-anchor="middle">H2</text>
+    <image class="slot-icon" x="-14" y="-154" width="28" height="28" visibility="hidden" />
+  </g>
+  <g class="slot high" data-slot="high-3" transform="translate(200 200) rotate(30)">
+    <circle cx="0" cy="-140" r="18" />
+    <text x="0" y="-105" text-anchor="middle">H3</text>
+    <image cla
 
-  <g class="s
-
-        <!-- HIGH -->
-        <g class="slot high" data-slot="high-1" transform="translate(200 20)">
-          <circle r="18" />
-          <text y="35">H</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
-
-        <g class="slot high" data-slot="high-2" transform="translate(320 120)">
-          <circle r="18" />
-          <text y="35">H</text>
-            <image
-    class="slot-icon"
-    x="-14"
-    y="-14"
-    width="28"
-    height="28"
-    visibility="hidden"
-  />
-        </g>
 
         <!-- MID -->
         <g class="slot mid" data-slot="mid-1" transform="translate(340 200)">
