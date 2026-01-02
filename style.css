@@ -231,3 +231,9 @@ body {
 .ship-option:hover {
   background: #555;
 }
+
+.ship-core {
+  fill: #444;
+  cursor: pointer;
+  pointer-events: all; /* ← add this */
+}
