@@ -129,20 +129,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const ship = SHIPS[shipName];
   if (!ship) return;
 
-  function placeSlots(type, count, centerAngle, clusterWidth = 60, radius = 140) {
+  function placeSlots(type, count, centerAngle, radius = 140, slotSize = 36, minGap = 2) {
     if (count === 0) return;
 
-    // Calculate angle spacing to fit slots within the cluster width
-    let angleStep = 0;
-    if (count > 1) {
-      angleStep = clusterWidth / (count - 1);
-    }
+    // Calculate the total angle each slot occupies
+    // arcLength = radius * angle → angle = arcLength / radius
+    const slotArc = slotSize / radius * (180 / Math.PI); // degrees
+    const gap = minGap; // minimal angle gap between slots
+    let totalArc = count * slotArc + (count - 1) * gap;
 
     // Start angle so cluster is centered
-    const startAngle = centerAngle - clusterWidth / 2;
+    const startAngle = centerAngle - totalArc / 2;
 
     for (let i = 0; i < count; i++) {
-      const angle = count === 1 ? centerAngle : startAngle + angleStep * i;
+      const angle = startAngle + i * (slotArc + gap);
 
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("class", `slot ${type}`);
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       circle.setAttribute("cx", 0);
       circle.setAttribute("cy", -radius);
-      circle.setAttribute("r", 18);
+      circle.setAttribute("r", slotSize / 2);
       g.appendChild(circle);
 
       // Text
@@ -187,14 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // =====================
-  // Place clusters
-  // =====================
-  // You can tweak clusterWidth and centerAngle for better spacing
-  placeSlots("high", ship.high, -30, 30);  // High slots cluster at top-left
-  placeSlots("mid", ship.mid, 120, 30);    // Mid slots cluster at right
-  placeSlots("low", ship.low, 240, 30);    // Low slots cluster at bottom-left
+  // Place clusters with tight spacing
+  placeSlots("high", ship.high, -30);  // top-left cluster
+  placeSlots("mid", ship.mid, 120);    // right cluster
+  placeSlots("low", ship.low, 240);    // bottom-left cluster
 }
+
 
 
   // =====================
