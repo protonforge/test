@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // =====================
-  // Ship Classes & Ships
+  // DATA
   // =====================
   const SHIP_CLASSES = {
     "Frigate": ["Succubus", "Gladius"],
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Vanguard": { high: 4, mid: 3, low: 2 },
     "Nova": { high: 3, mid: 3, low: 3 },
     "Excalibur": { high: 5, mid: 3, low: 3 },
-    "Reaper": { high: 4, mid: 4, low: 4 },
+    "Reaper": { high: 4, mid: 4, low: 4 }
   };
 
   const MODULE_DATA = {
@@ -36,18 +36,40 @@ document.addEventListener("DOMContentLoaded", () => {
     "Armor Repairer": { pg: 18, cap: 20, bonus: "Repairs Armor Over Time" }
   };
 
-  let selectedSlot = null;
-  let activeSlot = null;
-
-  const svg = document.getElementById("fitting-svg");
+  // =====================
+  // ELEMENT REFERENCES
+  // =====================
   const shipCore = document.querySelector(".ship-core");
   const classMenu = document.getElementById("class-menu");
   const shipMenu = document.getElementById("ship-menu");
   const classList = document.getElementById("class-list");
   const shipList = document.getElementById("ship-list");
+  const svg = document.getElementById("fitting-svg");
+
+  let selectedSlot = null;
+  let activeSlot = null;
 
   // =====================
-  // Generate class buttons
+  // TAB NAVIGATION
+  // =====================
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
+
+      if (target !== 'fittings') {
+        document.getElementById('module-info').classList.add('hidden');
+      }
+    });
+  });
+
+  // =====================
+  // GENERATE CLASS BUTTONS
   // =====================
   for (const shipClass in SHIP_CLASSES) {
     const div = document.createElement("div");
@@ -68,14 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // CLASS MENU CLICK → SHIP MENU
   // =====================
   classList.addEventListener("click", (e) => {
-    let option = e.target;
-    while (option && !option.dataset.shipClass) option = option.parentElement;
-    if (!option) return;
+    const option = e.target.closest(".ship-option");
+    if (!option || !option.dataset.shipClass) return;
 
     const shipClass = option.dataset.shipClass;
     const ships = SHIP_CLASSES[shipClass];
 
-    shipList.innerHTML = "";
+    shipList.innerHTML = ""; // clear previous ships
     ships.forEach(shipName => {
       const div = document.createElement("div");
       div.className = "ship-option";
@@ -89,16 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // SHIP MENU CLICK → CREATE SLOTS & CLOSE
+  // SHIP MENU CLICK → CREATE SLOTS & CLOSE MENU
   // =====================
   shipList.addEventListener("click", (e) => {
-    let option = e.target;
-    while (option && !option.dataset.ship) option = option.parentElement;
-    if (!option) return;
+    const option = e.target.closest(".ship-option");
+    if (!option || !option.dataset.ship) return;
 
     const selectedShip = option.dataset.ship;
-    if (!selectedShip) return;
-
     createSlots(selectedShip);
     shipMenu.classList.add("hidden");
   });
@@ -107,32 +125,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // CREATE CIRCULAR SLOTS
   // =====================
   function createSlots(shipName) {
-    if (!svg) return;
-
-    // Clear old slots
     svg.querySelectorAll(".slot").forEach(s => s.remove());
-
     const ship = SHIPS[shipName];
     if (!ship) return;
 
     function placeSlots(type, count, startAngle, endAngle, radius = 140) {
       for (let i = 0; i < count; i++) {
-        const angle = count === 1 ? (startAngle + endAngle) / 2
-          : startAngle + ((endAngle - startAngle) / (count - 1)) * i;
+        const angle = count === 1 ? (startAngle + endAngle)/2
+                                  : startAngle + ((endAngle - startAngle)/(count - 1))*i;
 
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute("class", `slot ${type}`);
-        g.setAttribute("data-slot", `${type}-${i+1}`);
+        g.setAttribute("data-slot", `${type}-${i + 1}`);
         g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
 
-        // Circle
         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cx", 0);
         circle.setAttribute("cy", -radius);
         circle.setAttribute("r", 18);
         g.appendChild(circle);
 
-        // Text
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", 0);
         text.setAttribute("y", -radius + 35);
@@ -140,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
         text.textContent = `${type[0].toUpperCase()}${i+1}`;
         g.appendChild(text);
 
-        // Icon
         const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
         image.setAttribute("class", "slot-icon");
         image.setAttribute("x", -14);
@@ -152,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         svg.appendChild(g);
 
-        // Slot click
+        // Slot click listener
         g.addEventListener("click", () => {
           svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
           selectedSlot = g;
@@ -167,25 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
     placeSlots("mid", ship.mid, 90, 150);
     placeSlots("low", ship.low, 210, 270);
   }
-
-  // =====================
-  // TAB NAVIGATION
-  // =====================
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-
-      tab.classList.add('active');
-      document.getElementById(target).classList.add('active');
-
-      if (target !== 'fittings') {
-        document.getElementById('module-info').classList.add('hidden');
-      }
-    });
-  });
 
   // =====================
   // MODULE LOGIC
