@@ -125,59 +125,68 @@ document.addEventListener("DOMContentLoaded", () => {
   // CREATE CIRCULAR SLOTS
   // =====================
   function createSlots(shipName) {
-    svg.querySelectorAll(".slot").forEach(s => s.remove());
-    const ship = SHIPS[shipName];
-    if (!ship) return;
+  svg.querySelectorAll(".slot").forEach(s => s.remove());
+  const ship = SHIPS[shipName];
+  if (!ship) return;
 
-    function placeSlots(type, count, startAngle, endAngle, radius = 140) {
-      for (let i = 0; i < count; i++) {
-        const angle = count === 1 ? (startAngle + endAngle)/2
-                                  : startAngle + ((endAngle - startAngle)/(count - 1))*i;
+  function placeSlots(type, count, centerAngle, angleSpacing = 10, radius = 140) {
+    if (count === 0) return;
 
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute("class", `slot ${type}`);
-        g.setAttribute("data-slot", `${type}-${i + 1}`);
-        g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
+    // Calculate the start angle so the cluster is centered
+    const totalSpread = angleSpacing * (count - 1);
+    const startAngle = centerAngle - totalSpread / 2;
 
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", 0);
-        circle.setAttribute("cy", -radius);
-        circle.setAttribute("r", 18);
-        g.appendChild(circle);
+    for (let i = 0; i < count; i++) {
+      const angle = startAngle + angleSpacing * i;
 
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", 0);
-        text.setAttribute("y", -radius + 35);
-        text.setAttribute("text-anchor", "middle");
-        text.textContent = `${type[0].toUpperCase()}${i+1}`;
-        g.appendChild(text);
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", `slot ${type}`);
+      g.setAttribute("data-slot", `${type}-${i + 1}`);
+      g.setAttribute("transform", `translate(200 200) rotate(${angle})`);
 
-        const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
-        image.setAttribute("class", "slot-icon");
-        image.setAttribute("x", -14);
-        image.setAttribute("y", -radius - 14);
-        image.setAttribute("width", 28);
-        image.setAttribute("height", 28);
-        image.setAttribute("visibility", "hidden");
-        g.appendChild(image);
+      // Circle
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", 0);
+      circle.setAttribute("cy", -radius);
+      circle.setAttribute("r", 18);
+      g.appendChild(circle);
 
-        svg.appendChild(g);
+      // Text
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", 0);
+      text.setAttribute("y", -radius + 35);
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = `${type[0].toUpperCase()}${i + 1}`;
+      g.appendChild(text);
 
-        // Slot click listener
-        g.addEventListener("click", () => {
-          svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
-          selectedSlot = g;
-          g.classList.add("selected");
+      // Icon
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      image.setAttribute("class", "slot-icon");
+      image.setAttribute("x", -14);
+      image.setAttribute("y", -radius - 14);
+      image.setAttribute("width", 28);
+      image.setAttribute("height", 28);
+      image.setAttribute("visibility", "hidden");
+      g.appendChild(image);
 
-          if (g.dataset.module) showModuleInfo(g);
-        });
-      }
+      svg.appendChild(g);
+
+      // Slot click listener
+      g.addEventListener("click", () => {
+        svg.querySelectorAll(".slot").forEach(s => s.classList.remove("selected"));
+        selectedSlot = g;
+        g.classList.add("selected");
+
+        if (g.dataset.module) showModuleInfo(g);
+      });
     }
-
-    placeSlots("high", ship.high, -60, 60);
-    placeSlots("mid", ship.mid, 90, 150);
-    placeSlots("low", ship.low, 210, 270);
   }
+
+  // Place clusters: center angles can be tweaked
+  placeSlots("high", ship.high, -30, 15); // High slots cluster at top-left
+  placeSlots("mid", ship.mid, 120, 15);   // Mid slots cluster at right
+  placeSlots("low", ship.low, 240, 15);   // Low slots cluster at bottom-left
+}
 
   // =====================
   // MODULE LOGIC
